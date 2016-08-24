@@ -6,7 +6,10 @@ var PropertiesActivator = require('bpmn-js-properties-panel/lib/PropertiesActiva
 
 // Require your custom property entries.
 var processProps = require('./parts/ProcessProps'),
-    generatorProps = require('./parts/GeneratorProps');
+    generatorProps = require('./parts/GeneratorProps'),
+    instrumentProps = require('./parts/InstrumentProps'),
+    drumProps = require('./parts/DrumProps');
+
 
 function createSettingsTabGroups(element, elementRegistry) {
 
@@ -18,6 +21,8 @@ function createSettingsTabGroups(element, elementRegistry) {
 
   processProps(generalGroup, element);
   generatorProps(generalGroup, element);
+  instrumentProps(generalGroup, element);
+  drumProps(generalGroup, element);
 
   return [
     generalGroup

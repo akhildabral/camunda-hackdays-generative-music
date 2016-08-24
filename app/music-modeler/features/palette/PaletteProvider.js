@@ -84,7 +84,45 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
+      'bpmn:StartEvent', 'generator', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
+    ),
+    'generator-separator': {
+      group: 'generator',
+      separator: true
+    },
+    'create.error-end-event': createAction(
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-error', 'Create Instrument A', { eventDefinitionType: 'bpmn:ErrorEventDefinition' }
+    ),
+    'create.escalation-end-event': createAction(
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-escalation', 'Create Instrument B', { eventDefinitionType: 'bpmn:EscalationEventDefinition' }
+    ),
+    'create.signal-end-event': createAction(
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-signal', 'Create Instrument C', { eventDefinitionType: 'bpmn:SignalEventDefinition' }
+    ),
+    'create.cancel-end-event': createAction(
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-cancel', 'Create Instrument D', { eventDefinitionType: 'bpmn:CancelEventDefinition' }
+    ),
+    'create.compensation-end-event': createAction(
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-compensation', 'Create Instrument E', { eventDefinitionType: 'bpmn:CompensationEventDefinition' }
+    ),
+    'instrument-separator': {
+      group: 'instrument',
+      separator: true
+    },
+    'create.service-task': createAction(
+      'bpmn:ServiceTask', 'drum', 'bpmn-icon-service-task', 'Create Kick Drum'
+    ),
+    'create.user-task': createAction(
+      'bpmn:UserTask', 'drum', 'bpmn-icon-user-task', 'Create Snare Drum'
+    ),
+    'create.manual-task': createAction(
+      'bpmn:ManualTask', 'drum', 'bpmn-icon-manual-task', 'Create Clap'
+    ),
+    'create.business-rule-task': createAction(
+      'bpmn:BusinessRuleTask', 'drum', 'bpmn-icon-business-rule-task', 'Create Closed HiHat'
+    ),
+    'create.script-task': createAction(
+      'bpmn:ScriptTask', 'drum', 'bpmn-icon-script-task', 'Create Open HiHat'
     ),
   });
 

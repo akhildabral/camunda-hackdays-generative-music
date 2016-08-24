@@ -38,5 +38,31 @@
         },
       ]
     },
+    {
+      "name": "InstrumentNode",
+      "extends": [
+        "bpmn:EndEvent"
+      ],
+      "properties": [
+        {
+          "name": "preset",
+          "isAttr": true,
+          "type": "String"
+        },
+      ]
+    },
+    {
+      "name": "DrumNode",
+      "extends": [
+        "bpmn:Task"
+      ],
+      "properties": [
+        {
+          "name": "preset",
+          "isAttr": true,
+          "type": "String"
+        },
+      ]
+    },
   ]
 }
