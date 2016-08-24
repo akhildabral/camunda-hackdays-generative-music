@@ -5,46 +5,44 @@ var inherits = require('inherits');
 var PropertiesActivator = require('bpmn-js-properties-panel/lib/PropertiesActivator');
 
 // Require your custom property entries.
-var intervalProps = require('./parts/IntervalProps');
+var intervalProps = require('./parts/IntervalProps'),
+    tempoProps = require('./parts/TempoProps');
 
-// Create the custom magic tab
-function createMagicTabGroups(element, elementRegistry) {
+function createSettingsTabGroups(element, elementRegistry) {
 
-  // Create a group called "Black Magic".
-  var blackMagicGroup = {
-    id: 'timing',
-    label: 'Timing',
+  var generalGroup = {
+    id: 'general',
+    label: 'General',
     entries: []
   };
 
-  // Add the spell props to the black magic group.
-  intervalProps(blackMagicGroup, element);
+  intervalProps(generalGroup, element);
+  tempoProps(generalGroup, element);
+
 
   return [
-    blackMagicGroup
+    generalGroup
   ];
 }
 
-function MagicPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
+function MusicPropertiesProvider(eventBus, bpmnFactory, elementRegistry) {
 
   PropertiesActivator.call(this, eventBus);
 
   this.getTabs = function(element) {
 
-    // The "magic" tab
-    var magicTab = {
+    var settingsTab = {
       id: 'settings',
       label: 'Settings',
-      groups: createMagicTabGroups(element, elementRegistry)
+      groups: createSettingsTabGroups(element, elementRegistry)
     };
 
-    // Show general + "magic" tab
     return [
-      magicTab
+      settingsTab
     ];
   };
 }
 
-inherits(MagicPropertiesProvider, PropertiesActivator);
+inherits(MusicPropertiesProvider, PropertiesActivator);
 
-module.exports = MagicPropertiesProvider;
+module.exports = MusicPropertiesProvider;
