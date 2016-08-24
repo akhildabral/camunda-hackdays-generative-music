@@ -2,7 +2,7 @@
 
 var Voice = require('./Voice');
 
-function Voices(audioContext, output, config) {
+function Synthesizer(audioContext, output, config) {
 
   this.audioContext = audioContext;
   this.output = output;
@@ -19,7 +19,7 @@ function Voices(audioContext, output, config) {
 
 }
 
-Voices.prototype.startAt = function(frequency, time) {
+Synthesizer.prototype.startFrequencyAt = function(frequency, time) {
 
   var voice = new Voice(this.audioContext, this.config, frequency);
 
@@ -28,4 +28,4 @@ Voices.prototype.startAt = function(frequency, time) {
 
 }
 
-module.exports = Voices;
+module.exports = Synthesizer;

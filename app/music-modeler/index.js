@@ -16,8 +16,10 @@ inherits(MusicModeler, Modeler);
 MusicModeler.prototype._modules = [].concat(
   MusicModeler.prototype._modules,
   [
+    { audioContext: [ 'value', new AudioContext() ] },
     require('./core'),
-    require('./features/palette')
+    require('./features/palette'),
+    require('./features/synthesizer')
   ]
 );
 
