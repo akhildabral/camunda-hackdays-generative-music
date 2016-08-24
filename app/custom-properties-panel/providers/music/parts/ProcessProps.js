@@ -14,5 +14,12 @@ module.exports = function(group, element) {
       label : 'Tempo',
       modelProperty : 'tempo'
     }));
+
+    group.entries.push(entryFactory.textField({
+      id : 'volume',
+      description : 'Specify the main volume',
+      label : 'Volume',
+      modelProperty : 'volume'
+    }));
   }
 };

@@ -5,8 +5,8 @@ var inherits = require('inherits');
 var PropertiesActivator = require('bpmn-js-properties-panel/lib/PropertiesActivator');
 
 // Require your custom property entries.
-var intervalProps = require('./parts/IntervalProps'),
-    tempoProps = require('./parts/TempoProps');
+var processProps = require('./parts/ProcessProps'),
+    generatorProps = require('./parts/GeneratorProps');
 
 function createSettingsTabGroups(element, elementRegistry) {
 
@@ -16,9 +16,8 @@ function createSettingsTabGroups(element, elementRegistry) {
     entries: []
   };
 
-  intervalProps(generalGroup, element);
-  tempoProps(generalGroup, element);
-
+  processProps(generalGroup, element);
+  generatorProps(generalGroup, element);
 
   return [
     generalGroup
