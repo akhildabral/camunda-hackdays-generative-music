@@ -26,6 +26,8 @@ modeler.createDiagram();
 window.bpmnjs = modeler;
 
 // audio nodes test
+
+/*
 var audioContext = new AudioContext();
 
 var Oscillator = require('./lib/audio-nodes/Oscillator'),
@@ -35,7 +37,7 @@ var Oscillator = require('./lib/audio-nodes/Oscillator'),
     Filter = require('./lib/audio-nodes/Filter'),
     Reverb = require('./lib/audio-nodes/Reverb');
 
-var Patch = require('./lib/Patch.js');
+var Voices = require('./lib/Voices.js');
 
 var oscillator = new Oscillator(audioContext, { type: 'square' }),
     gain = new Gain(audioContext),
@@ -44,19 +46,38 @@ var oscillator = new Oscillator(audioContext, { type: 'square' }),
     filter = new Filter(audioContext, { type: 'lowpass', frequency: 2000.0 }),
     reverb = new Reverb(audioContext, { duration: 2.0, decay: 1.0, reverse: true });
 
-var simple = new Patch(audioContext, {
+var compressor = audioContext.createDynamicsCompressor();
+compressor.connect(audioContext.destination);
+
+var simple = new Voices(audioContext, compressor, {
   oscillator: {
     type: 'square'
   },
   envelope: {
     attack: 0.1,
-    release: 0.2,
+    release: 2.0,
     amplitude: 0.3
+  },
+  filter: {
+    type: 'lowpass',
+    q: '6',
+    frequency: '2000'
+  },
+  delay: {
+    delayTime: 0.5,
+    feedback: 0.5
+  },
+  reverb: {
+    duration: 2.0,
+    decay: 1.0,
+    reverse: true
   }
 });
 
-simple.connect(audioContext.destination);
-
 // test patch
-simple.playAt(440.0, 1);
-simple.playAt(880.0, 1);
+simple.startAt(261.63, 1);
+simple.startAt(130.81, 1);
+simple.startAt(311.13, 2);
+simple.startAt(349.23, 3);
+simple.startAt(130.81, 3);
+*/
