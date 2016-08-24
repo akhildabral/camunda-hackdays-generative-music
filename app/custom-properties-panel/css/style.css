@@ -104,6 +104,7 @@ a:link {
 }
 /* line 112, styles/app.less */
 #js-properties-panel {
+  background-color: #f8f8f8;
   position: absolute;
   top: 0;
   bottom: 0;
