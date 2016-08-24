@@ -7,17 +7,17 @@ var assign = require('lodash/object/assign'),
 
 var inherits = require('inherits');
 
-function CustomModeler(options) {
+function MusicModeler(options) {
   Modeler.call(this, options);
 }
 
-inherits(CustomModeler, Modeler);
+inherits(MusicModeler, Modeler);
 
-CustomModeler.prototype._modules = [].concat(
-  CustomModeler.prototype._modules,
+MusicModeler.prototype._modules = [].concat(
+  MusicModeler.prototype._modules,
   [
-    // require('./custom')
+    require('./core')
   ]
 );
 
-module.exports = CustomModeler;
+module.exports = MusicModeler;

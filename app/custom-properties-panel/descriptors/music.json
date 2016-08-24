@@ -18,6 +18,11 @@
           "isAttr": true,
           "type": "String"
         },
+        {
+          "name": "volume",
+          "isAttr": true,
+          "type": "String"
+        }
       ]
     },
     {

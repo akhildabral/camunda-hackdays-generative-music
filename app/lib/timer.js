@@ -60,7 +60,7 @@ function init() {
   // if we want crazy rendering stuff we kick of this loop
   // window.requestAnimationFrame(tick);
 
-  worker = new Worker("worker.js");
+  worker = new Worker("lib/worker.js");
 
   worker.onmessage = function(e) {
 
@@ -189,12 +189,7 @@ addNote(13, { frequency: notes.G4, patch: patches['simple'] });
 
 // UI
 var buttonPlay = document.getElementById('play');
-var buttonMetronome = document.getElementById('metronome');
 
 buttonPlay.addEventListener('click', function() {
   play();
-});
-
-buttonMetronome.addEventListener('click', function() {
-  metronome = !metronome;
 });
