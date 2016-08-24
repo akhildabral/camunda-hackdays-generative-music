@@ -69,6 +69,16 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      music: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%=config.sources %>/lib/',
+            src:[ '*.js' ],
+            dest: '<%= config.dist %>/lib'
+          }
+        ]
+      },
       diagram_js: {
         files: [
           {
