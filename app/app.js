@@ -40,5 +40,5 @@ var oscillator = new Oscillator(audioContext, { type: 'square' }),
     gain = new Gain(audioContext),
     envelopeGenerator = new EnvelopeGenerator({ attack: 0.1, release: 0.2, amplitude: 0.3 }),
     delay = new Delay(audioContext, { delayTime: 0.5, feedback: 0.5 }),
-    filter = new Filter(audioContext, { type: 'lowpass', frequency: 2000,.0 }),
+    filter = new Filter(audioContext, { type: 'lowpass', frequency: 2000.0 }),
     reverb = new Reverb(audioContext, { duration: 2.0, decay: 1.0, reverse: true });
