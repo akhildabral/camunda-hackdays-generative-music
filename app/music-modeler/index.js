@@ -16,7 +16,8 @@ inherits(MusicModeler, Modeler);
 MusicModeler.prototype._modules = [].concat(
   MusicModeler.prototype._modules,
   [
-    require('./core')
+    require('./core'),
+    require('./features/palette')
   ]
 );
 
