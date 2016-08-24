@@ -1,0 +1,24 @@
+{
+  "name": "Music",
+  "prefix": "music",
+  "uri": "http://music",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "associations": [],
+  "types": [
+    {
+      "name": "GeneratorNode",
+      "extends": [
+        "bpmn:StartEvent"
+      ],
+      "properties": [
+        {
+          "name": "interval",
+          "isAttr": true,
+          "type": "String"
+        },
+      ]
+    },
+  ]
+}
