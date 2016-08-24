@@ -9,15 +9,15 @@ module.exports = function(group, element) {
 
   if (is(element, 'bpmn:StartEvent')) {
     group.entries.push(entryFactory.selectBox({
-      id : 'interval',
-      description : 'Specify the interval an impule is generated',
-      label : 'Interval',
-      modelProperty : 'interval',
+      id : 'timeDivision',
+      description : 'Specify the time division',
+      label : 'Time Division',
+      modelProperty : 'timeDivision',
       selectOptions: [
-        { name: '3/4', value: '3/4' },
-        { name: '4/4', value: '4/4' },
-        { name: '7/8', value: '7/8' },
-        { name: '8/8', value: '8/8' }
+        { name: '1/1', value: '1/1' },
+        { name: '1/2', value: '1/2' },
+        { name: '1/4', value: '1/4' },
+        { name: '1/8', value: '1/8' }
       ]
     }));
   }

@@ -84,7 +84,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none', 'Create Generator'
+      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
     ),
   });
 
