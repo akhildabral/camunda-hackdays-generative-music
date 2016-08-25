@@ -1,6 +1,7 @@
 'use strict';
 
-var find = require('lodash/collection/find');
+var find = require('lodash/collection/find'),
+    has = require('lodash/object/has');
 
 var getDistance = require('../../util/CalcUtil').getDistance;
 
@@ -127,6 +128,37 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
   this._steps = newSteps;
 
   return this._steps;
+};
+
+/**
+ * {
+ *  preset: 'simple-mode',
+ *  note: 'a1',
+ *  id: 'foo-bar'
+ * }
+ *
+ * @method getSound
+ *
+ * @return {Object}
+ */
+Generator.prototype.getSound = function(shape) {
+  var businessObject = shape.businessObject;
+
+  if (!has(businessObject, [ 'preset', 'note', 'id' ])) {
+    throw new Error('missing properties, can not get sound');
+  }
+
+  return {
+    preset: businessObject.preset,
+    note: businessObject.note,
+    id: businessObject.id
+  };
+};
+
+Generator.prototype.calculateStepNumber = function(shape) {
+
+  console.log('calculating step number');
+  return 0;
 };
 
 Generator.prototype.registerSound = function(stepNumber, sound) {
