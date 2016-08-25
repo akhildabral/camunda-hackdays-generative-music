@@ -19,7 +19,7 @@ MusicModeler.prototype._modules = [].concat(
     { audioContext: [ 'value', new AudioContext() ] },
     require('./core'),
     require('./features/palette'),
-    require('./features/synthesizer')
+    require('./features/sound-machine')
   ]
 );
 

@@ -1,13 +1,13 @@
 'use strict';
 
-var parser = require('note-parser')
+var parser = require('note-parser');
 
-var Voice = require('./Voice');
+var SynthesizerVoice = require('./SynthesizerVoice');
 
 function Synthesizer(audioContext, output, config) {
 
-  this.audioContext = audioContext;
-  this.output = output;
+  this._audioContext = audioContext;
+  this._output = output;
 
   if (!config) {
     throw new Error('no configuration found');
@@ -17,16 +17,18 @@ function Synthesizer(audioContext, output, config) {
     throw new Error('no oscillator config found');
   }
 
-  this.config = config;
+  this._config = config;
 
 }
 
+module.exports = Synthesizer;
+
 Synthesizer.prototype.playFrequencyAt = function(frequency, time) {
 
-  var voice = new Voice(this.audioContext, this.config, frequency);
+  var synthesizerVoice = new SynthesizerVoice(this._audioContext, this._config, frequency);
 
-  voice.connect(this.output);
-  voice.startAt(time);
+  synthesizerVoice.connect(this._output);
+  synthesizerVoice.playAt(time);
 
 };
 
@@ -37,5 +39,3 @@ Synthesizer.prototype.playNoteAt = function(note, time) {
   this.playFrequencyAt(frequency, time);
 
 };
-
-module.exports = Synthesizer;

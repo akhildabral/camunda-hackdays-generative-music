@@ -1,13 +1,13 @@
 'use strict';
 
-var Oscillator = require('./audio-nodes/Oscillator'),
-    Gain = require('./audio-nodes/Gain'),
-    EnvelopeGenerator = require('./audio-nodes/EnvelopeGenerator'),
-    Filter = require('./audio-nodes/Filter'),
-    Delay = require('./audio-nodes/Delay'),
-    Reverb = require('./audio-nodes/Reverb');
+var Oscillator = require('../audio-nodes/Oscillator'),
+    Gain = require('../audio-nodes/Gain'),
+    EnvelopeGenerator = require('../audio-nodes/EnvelopeGenerator'),
+    Filter = require('../audio-nodes/Filter'),
+    Delay = require('../audio-nodes/Delay'),
+    Reverb = require('../audio-nodes/Reverb');
 
-function Voice (audioContext, config, frequency) {
+function SynthesizerVoice (audioContext, config, frequency) {
   this.audioContext = audioContext;
 
   if (!config) {
@@ -48,7 +48,9 @@ function Voice (audioContext, config, frequency) {
 
 }
 
-Voice.prototype.connect = function(node) {
+module.exports = SynthesizerVoice;
+
+SynthesizerVoice.prototype.connect = function(node) {
 
   if (node.hasOwnProperty('input')) {
     this.output.connect(node.input);
@@ -56,12 +58,10 @@ Voice.prototype.connect = function(node) {
     this.output.connect(node);
   };
 
-}
+};
 
-Voice.prototype.startAt = function(time) {
+SynthesizerVoice.prototype.playAt = function(time) {
 
   this.envelope.triggerAt(time);
 
 };
-
-module.exports = Voice;
