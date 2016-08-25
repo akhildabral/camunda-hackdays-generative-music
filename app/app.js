@@ -26,9 +26,10 @@ var initialDiagram =
                     'xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" ' +
                     'xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" ' +
                     'xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" ' +
+                    'xmlns:music="http://music" ' +
                     'targetNamespace="http://bpmn.io/schema/bpmn" ' +
                     'id="Definitions_1">' +
-    '<bpmn:process id="Process_1" isExecutable="false">' +
+    '<bpmn:process id="Process_1" isExecutable="false" music:tempo="120" music:volume="50">' +
     '</bpmn:process>' +
     '<bpmndi:BPMNDiagram id="BPMNDiagram_1">' +
       '<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">' +
