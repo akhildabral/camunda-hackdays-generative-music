@@ -28,6 +28,9 @@ var MAX_DIST = 600;
 function GeneratorManager(eventBus, executor, elementRegistry) {
   this._eventBus = eventBus;
   this._executor = executor;
+  this._elementRegistry = elementRegistry;
+
+  var self = this;
 
   eventBus.on('master-clock.start', function(context) {
     var numSteps = context.numSteps;
@@ -47,10 +50,13 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
       // check distance for all generators
       forEach(this._executor._generators, function(generator) {
-        var generatorShape = 
+        var generatorShape = self._elementRegistry.get(generator.id);
 
-        if (getDistance(1, 2) <= MAX_DIST) {
+        if (getDistance(shape, generatorShape) <= MAX_DIST) {
+
+          // inside max distance, calculate step
           console.log('inside max distance');
+
         }
 
       });
