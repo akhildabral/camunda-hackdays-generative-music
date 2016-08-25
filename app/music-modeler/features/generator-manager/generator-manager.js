@@ -43,7 +43,25 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
         generators;
 
     if (is(shape, 'bpmn:StartEvent')) {
-      this.createNewGenerator(shape);
+      var generator = this.createNewGenerator(shape);
+
+      var musicalElements = this._elementRegistry.filter(function(element) {
+        return isMusicalEvent(element);
+      });
+
+      forEach(musicalElements, function(element) {
+
+        if (getDistance(shape, element) <= MAX_DIST) {
+
+          var stepNumber = generator.calculateStepNumber(shape, element);
+
+          // register sound on generator
+          generator.registerElement(stepNumber, element);
+
+          modeling.connect(shape, element);
+        }
+
+      });
     }
 
     // if musical event
@@ -68,11 +86,22 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
     }
   }, this);
 
-  eventBus.on('shape.delete', function(context) {
-    var shape = context.shape;
+  eventBus.on('shape.removed', function(context) {
+    var element = context.element;
 
-    if (is(shape, 'bpmn:StartEvent')) {
-      executor.removeGenerator(shape.id);
+    if (is(element, 'bpmn:StartEvent')) {
+      executor.removeGenerator(element.id);
+    }
+
+    // if musical event
+    if (isMusicalEvent(element)) {
+
+      forEach(self._executor.getAllGenerators(), function(generator) {
+
+        // remove from generator if registered
+        console.log('removing from generator');
+      });
+
     }
   }, this);
 
@@ -146,4 +175,6 @@ GeneratorManager.prototype.createNewGenerator = function(shape) {
   generator.id = shape.id;
 
   executor.registerGenerator(generator);
+
+  return generator;
 };
