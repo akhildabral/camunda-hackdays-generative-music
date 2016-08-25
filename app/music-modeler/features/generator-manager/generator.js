@@ -1,9 +1,13 @@
 'use strict';
 
 var find = require('lodash/collection/find'),
-    has = require('lodash/object/has');
+    pick = require('lodash/object/pick');
 
-var getDistance = require('../../util/CalcUtil').getDistance;
+function has(obj, keys) {
+  var actualKeys = pick(obj, keys);
+
+  return actualKeys.length !== keys.length;
+}
 
 /**
  * @example
@@ -137,11 +141,11 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
  *  id: 'foo-bar'
  * }
  *
- * @method getSound
+ * @method createSound
  *
  * @return {Object}
  */
-Generator.prototype.getSound = function(shape) {
+Generator.prototype.createSound = function(shape) {
   var businessObject = shape.businessObject;
 
   if (!has(businessObject, [ 'preset', 'note', 'id' ])) {
@@ -153,6 +157,18 @@ Generator.prototype.getSound = function(shape) {
     note: businessObject.note,
     id: businessObject.id
   };
+};
+
+Generator.prototype.getStepNumFromSound = function(shape) {
+  var stepNumber;
+
+  this.loopSteps(function(step, stepIndex) {
+    if (step.length) {
+      stepNumber = find(step, { id: shape.id }) ? stepIndex : null;
+    }
+  });
+
+  return stepNumber;
 };
 
 Generator.prototype.calculateStepNumber = function(shape) {
