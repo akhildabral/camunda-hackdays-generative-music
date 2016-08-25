@@ -54,8 +54,8 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
         if (getDistance(shape, generatorShape) <= MAX_DIST) {
 
-          // inside max distance, calculate step
-          console.log('inside max distance');
+          // register sound on generator
+          generator.registerSound(shape);
 
         }
 

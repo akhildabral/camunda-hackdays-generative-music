@@ -134,12 +134,22 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
  *  id: 'foo-bar'
  * }
  *
- * @method getPatch
+ * @method getSound
  *
  * @return {Object}
  */
-Generator.prototype.getPatch = function(shape) {
-  // fetch patch from the businessObject
+Generator.prototype.getSound = function(shape) {
+  if (!shape.businessObject.preset
+      || shape.businessObject.note
+      || shape.businessObject.id) {
+    throw new Error('missing properties, can not get sound');
+  }
+
+  return {
+    preset: shape.businessObject.preset,
+    note: shape.businessObject.note,
+    id: shape.businessObject.id
+  };
 };
 
 Generator.prototype.calculateStepNumber = function(shape) {
@@ -149,7 +159,7 @@ Generator.prototype.calculateStepNumber = function(shape) {
 };
 
 Generator.prototype.registerSound = function(shape) {
-  var sound = this.getPatch(shape);
+  var sound = this.getSound(shape);
 
   var stepNumber = this.calculateStepNumber(shape);
 
@@ -159,7 +169,7 @@ Generator.prototype.registerSound = function(shape) {
 };
 
 Generator.prototype.update = function(shape) {
-  var sound = this.getPatch(shape);
+  var sound = this.getSound(shape);
 
   var stepNumber = this.calculateStepNumber(shape);
 
