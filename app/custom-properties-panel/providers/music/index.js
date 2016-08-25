@@ -1,4 +1,5 @@
 module.exports = {
-  __init__: [ 'propertiesProvider' ],
-  propertiesProvider: [ 'type', require('./MusicPropertiesProvider') ]
+  __init__: [ 'propertiesProvider', 'keyboardBehavior' ],
+  propertiesProvider: [ 'type', require('./MusicPropertiesProvider') ],
+  keyboardBehavior: [ 'type', require('./KeyboardBehavior') ]
 };
