@@ -67,6 +67,11 @@
           "isAttr": true,
           "type": "String"
         },
+        {
+          "name": "note",
+          "isAttr": true,
+          "type": "String"
+        },
       ]
     },
   ]
