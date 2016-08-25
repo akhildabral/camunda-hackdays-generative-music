@@ -1,6 +1,7 @@
 'use strict';
 
-var find = require('lodash/collection/find');
+var find = require('lodash/collection/find'),
+    forEach = require('lodash/collection/forEach');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
@@ -24,7 +25,7 @@ var MAX_DIST = 600;
  *  changed: [ 4 ]
  * }
  */
-function GeneratorManager(eventBus, executor) {
+function GeneratorManager(eventBus, executor, elementRegistry) {
   this._eventBus = eventBus;
   this._executor = executor;
 
@@ -43,7 +44,17 @@ function GeneratorManager(eventBus, executor) {
 
     // if musical event
     if(isMusicalEvent(shape)) {
-      console.log('musical event yawww');
+
+      // check distance for all generators
+      forEach(this._executor._generators, function(generator) {
+        var generatorShape = 
+
+        if (getDistance(1, 2) <= MAX_DIST) {
+          console.log('inside max distance');
+        }
+
+      });
+
     }
 
   }, this);
@@ -90,7 +101,7 @@ function GeneratorManager(eventBus, executor) {
 
 module.exports = GeneratorManager;
 
-GeneratorManager.$inject = [ 'eventBus', 'executor' ];
+GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry' ];
 
 
 GeneratorManager.prototype.findGenerator = function(shape) {
