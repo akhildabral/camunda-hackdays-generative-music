@@ -103,7 +103,7 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
       // if it is a generator
       if (is(element, 'bpmn:StartEvent') && element.type !== 'label') {
 
-        newSubDivision = element.businessObject.timeDivision;
+        newSubDivision = element.businessObject.subDivision;
 
         generator = executor.getGenerator(element.id);
 

@@ -31,15 +31,21 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
 
       var shape = elementFactory.createShape(assign({ type: type }, options));
 
+      var bo = shape.businessObject;
+
       if (options) {
-        shape.businessObject.di.isExpanded = options.isExpanded;
+        bo.di.isExpanded = options.isExpanded;
 
         if (options.preset) {
-          shape.businessObject.preset = options.preset;
+          bo.preset = options.preset;
         }
 
         if (options.note) {
-          shape.businessObject.note = options.note;
+          bo.note = options.note;
+        }
+
+        if (options.subDivision) {
+          bo.subDivision = options.subDivision;
         }
       }
 
@@ -65,7 +71,11 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
 
   assign(actions, {
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'generator', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
+      'bpmn:StartEvent',
+      'generator',
+      'bpmn-icon-start-event-message',
+      'Create Generator',
+      { eventDefinitionType: 'bpmn:MessageEventDefinition', subDivision: 4 }
     ),
     'generator-separator': {
       group: 'generator',
