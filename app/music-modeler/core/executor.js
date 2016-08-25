@@ -76,8 +76,14 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
     return;
   }
 
+  var self = this;
+
   for (idx = 0; idx < elements.length; idx++) {
-    sounds.push(pick(elements[idx].businessObject, [ 'preset', 'note' ]));
+    var element = elements[idx];
+
+    sounds.push(pick(element.businessObject, [ 'preset', 'note' ]));
+
+    self._eventBus.fire('element.play', { element: element });
   }
 
   if (!sounds.length) {

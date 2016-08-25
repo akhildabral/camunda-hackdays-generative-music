@@ -20,7 +20,8 @@ MusicModeler.prototype._modules = [].concat(
     require('./features/context-pad'),
     require('./features/modeling'),
     require('./features/palette'),
-    require('./features/sound-machine')
+    require('./features/sound-machine'),
+    require('./features/visualizer')
   ]
 );
 
