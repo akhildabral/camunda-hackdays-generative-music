@@ -31,28 +31,28 @@ module.exports = function(group, element) {
 
     group.entries.push(selectBox);
 
-    var id = 'music-note',
-        label = 'music-note';
+    var id = 'note',
+        label = 'note';
 
     var resource = { id: id, label: label };
 
     resource.html = '<label for="camunda-preset">Note</label>' +
     '<div id="keyboard">' +
-      '<div type="flat" id="C2"></div>' +
-      '<div type="sharp" id="C2s"></div>' +
-      '<div type="flat" id="D2"></div>' +
-      '<div type="sharp" id="D2s"></div>' +
-      '<div type="flat" id="E2"></div>' +
-      '<div type="flat" id="F2"></div>' +
-      '<div type="sharp" id="F2s"></div>' +
-      '<div type="flat" id="G2"></div>' +
-      '<div type="sharp" id="G2s"></div>' +
-      '<div type="flat" id="A2"></div>' +
-      '<div type="sharp" id="A2s"></div>' +
-      '<div type="flat" id="H2"></div>' +
-      '<div type="flat" id="C3"></div>' +
-      '<div type="sharp" id="C3s"></div>' +
-      '<div type="flat" id="D3"></div>' +
+      '<div type="flat" id="c3"></div>' +
+      '<div type="sharp" id="csharp3"></div>' +
+      '<div type="flat" id="d3"></div>' +
+      '<div type="sharp" id="dsharp3"></div>' +
+      '<div type="flat" id="e3"></div>' +
+      '<div type="flat" id="f3"></div>' +
+      '<div type="sharp" id="fsharp3"></div>' +
+      '<div type="flat" id="g3"></div>' +
+      '<div type="sharp" id="gsharp3"></div>' +
+      '<div type="flat" id="a3"></div>' +
+      '<div type="sharp" id="asharp3"></div>' +
+      '<div type="flat" id="h3"></div>' +
+      '<div type="flat" id="c4"></div>' +
+      '<div type="sharp" id="csharp4"></div>' +
+      '<div type="flat" id="d4"></div>' +
     '</div>';
 
     resource.get = function(entry, node) {

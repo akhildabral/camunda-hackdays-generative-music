@@ -37,6 +37,10 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
         if (options.preset) {
           shape.businessObject.preset = options.preset;
         }
+
+        if (options.note) {
+          shape.businessObject.note = options.note;
+        }
       }
 
       create.start(event, shape);
@@ -71,13 +75,13 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       'bpmn:EndEvent', 'instrument',
       'bpmn-icon-end-event-error',
       'Create Bell',
-      { eventDefinitionType: 'bpmn:ErrorEventDefinition', preset: "synthesizerBell" }
+      { eventDefinitionType: 'bpmn:ErrorEventDefinition', preset: 'synthesizerBell', note: 'c3' }
     ),
     'create.escalation-end-event': createAction(
       'bpmn:EndEvent', 'instrument',
       'bpmn-icon-end-event-escalation',
       'Create Square Lead',
-      { eventDefinitionType: 'bpmn:EscalationEventDefinition', preset: "synthesizerSquarelead" }
+      { eventDefinitionType: 'bpmn:EscalationEventDefinition', preset: 'synthesizerSquarelead', note: 'e3' }
     ),
     'create.signal-end-event': createAction(
       'bpmn:EndEvent',
@@ -109,31 +113,35 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       'drum',
       'bpmn-icon-service-task',
       'Create 808 Kick',
-      { preset: 'samplerKick' }
+      { preset: 'samplerKick', note: 'c3' }
     ),
     'create.user-task': createAction(
       'bpmn:UserTask',
       'drum',
       'bpmn-icon-user-task',
-      'Create Snare Drum'
+      'Create 808 Snare',
+      { preset: 'samplerSnare', note: 'c3'}
     ),
     'create.manual-task': createAction(
       'bpmn:ManualTask',
       'drum',
       'bpmn-icon-manual-task',
-      'Create Clap'
+      'Create 808 Clap',
+      { preset: 'samplerClap', note: 'c3'}
     ),
     'create.business-rule-task': createAction(
       'bpmn:BusinessRuleTask',
       'drum',
       'bpmn-icon-business-rule-task',
-      'Create Closed HiHat'
+      'Create 808 Closed Hat',
+      { preset: 'samplerClosedHat', note: 'c3'}
     ),
     'create.script-task': createAction(
       'bpmn:ScriptTask',
       'drum',
       'bpmn-icon-script-task',
-      'Create Open HiHat'
+      'Create 808 Open Hat',
+      { preset: 'samplerOpenHat', note: 'c3'}
     ),
   });
 
