@@ -1,5 +1,9 @@
 'use strict';
 
+var forEach = require('lodash/collection/forEach');
+
+var is = require('bpmn-js/lib/util/ModelUtil').is;
+
 var MASTER_TEMPO = 120,
     NUM_STEPS = 16;
 
@@ -19,6 +23,25 @@ function MasterClock(eventBus, audioContext) {
 
   eventBus.on('import.done', function() {
     this.init();
+  }, this);
+
+  eventBus.on('elements.changed', function(context) {
+
+    var self = this;
+
+    forEach(context.elements, function(element) {
+
+      // if it is a generator
+      if (is(element, 'bpmn:Process')) {
+
+        var tempo = element.businessObject.tempo;
+
+        if (self._tempo !== tempo) {
+          self._tempo = tempo;
+        }
+      };
+
+    });
   }, this);
 }
 
