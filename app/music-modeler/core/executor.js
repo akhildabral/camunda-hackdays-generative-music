@@ -4,6 +4,8 @@ function Executor(eventBus, audioContext) {
   this._eventBus = eventBus;
   this._audioContext = audioContext;
 
+  this._generators = {};
+
   this._steps = {};
 
   eventBus.on('master-clock.start', function(context) {
@@ -27,6 +29,22 @@ module.exports = Executor;
 
 Executor.$inject = [ 'eventBus', 'audioContext' ];
 
+
+Executor.prototype.register = function(id, generator) {
+  this._generators[id] = generator;
+};
+
+Executor.prototype.getGenerator = function(id) {
+  return this._generators[id];
+};
+
+Executor.prototype.getAllGenerators = function() {
+  return this._generators;
+};
+
+Executor.prototype.removeGenerator = function(id) {
+  delete this._generators[id];
+};
 
 Executor.prototype.trigger = function(tick, nextNoteTime) {
   // var soundMachine = this._soundMachine;

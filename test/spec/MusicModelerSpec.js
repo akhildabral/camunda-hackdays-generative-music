@@ -34,19 +34,19 @@ describe('custom modeler', function() {
       });
     });
 
-    describe('generator', function () {
-      var generator;
+    describe('generators', function () {
+      var generators;
 
       function registerSounds(sounds) {
         forEach(sounds, function(patches, stepNum) {
           forEach(patches, function(patch) {
-            generator._insertSound(generator._steps, stepNum, patch);
+            generators._insertSound(generators._steps, stepNum, patch);
           });
         });
       }
 
       beforeEach(function() {
-        generator = modeler.get('generator');
+        generators = modeler.get('generators');
       });
 
       it('should convert to smaller sub division', function() {
@@ -61,7 +61,7 @@ describe('custom modeler', function() {
         });
 
         // when
-        newSteps = generator.updateSubDivision(8);
+        newSteps = generators.updateSubDivision(8);
 
         expect(newSteps).to.eql({
           0: [ 'a' ], 2: [],
@@ -77,8 +77,8 @@ describe('custom modeler', function() {
         // given
         var newSteps;
 
-        // reset the generator to 16ths
-        generator.updateSubDivision(16);
+        // reset the generators to 16ths
+        generators.updateSubDivision(16);
 
         registerSounds({
           0: [ 'a' ],
@@ -100,7 +100,7 @@ describe('custom modeler', function() {
         });
 
         // when
-        newSteps = generator.updateSubDivision(8);
+        newSteps = generators.updateSubDivision(8);
 
         expect(newSteps).to.eql({
           0: [ 'a', 'b' ], 2: [ 'c', 'd' ],
@@ -123,7 +123,7 @@ describe('custom modeler', function() {
         });
 
         // when
-        newSteps = generator.scheduleSounds();
+        newSteps = generators.scheduleSounds();
 
         expect(newSteps).to.eql({
           0: ['a'], 4: ['b'], 12: ['c', 'd']

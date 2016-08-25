@@ -1,6 +1,6 @@
 'use strict';
 
-var DEFAULT_DIVISION = 4; // just need divider coz: 1 / n
+var find = require('lodash/collection/find');
 
 /**
  * @example
@@ -13,40 +13,17 @@ var DEFAULT_DIVISION = 4; // just need divider coz: 1 / n
  *  changed: [ 4 ]
  * }
  */
-function Generator(eventBus, executor) {
-  this._eventBus = eventBus;
-  this._executor = executor;
-
+function Generator(numSteps, subDivision) {
   this._steps = {
     changed: []
   };
 
-  this._subDivision = DEFAULT_DIVISION;
+  this._subDivision = subDivision;
 
-  eventBus.on('master-clock.start', function(context) {
-    var numSteps = context.numSteps;
-
-    this.init(numSteps);
-  }, this);
-
-  eventBus.on('create.end', function(context) {
-    var shape = context.shape;
-
-    // if shape doesn't surpass the max length
-    this.registerSound(shape);
-  }, this);
-
-  eventBus.on('move.end', function(context) {
-    var shape = context.shape;
-
-    // if shape doesn't surpass the max length
-    this.updateSound(shape);
-  }, this);
+  this.init(numSteps, subDivision);
 }
 
 module.exports = Generator;
-
-Generator.$inject = [ 'eventBus', 'executor' ];
 
 /**
  * full: [ 0 ],
@@ -57,8 +34,8 @@ Generator.$inject = [ 'eventBus', 'executor' ];
  *
  * @param  {Number} numSteps
  */
-Generator.prototype.init = function(numSteps) {
-  var divider = numSteps / DEFAULT_DIVISION;
+Generator.prototype.init = function(numSteps, subDivision) {
+  var divider = numSteps / subDivision;
 
   this._steps = {
     changed: []
@@ -72,9 +49,15 @@ Generator.prototype.init = function(numSteps) {
 };
 
 Generator.prototype.loopSteps = function(divider, fn) {
+  var result;
+
   for (var idx = 0; idx < this._numSteps; idx++) {
     if (idx % divider === 0) {
-      fn.call(this, this._steps[idx], idx);
+      result = fn.call(this, this._steps[idx], idx);
+
+      if (result === false) {
+        break;
+      }
     }
   }
 };
@@ -94,8 +77,7 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
       newSteps = {
         changed: []
       },
-      stepCounter = 0,
-      idx;
+      stepCounter = 0;
 
   if (newSubDivision === this._subDivision) {
     return;
@@ -129,9 +111,7 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
       if (newSteps[index]) {
         newSteps[index] = step;
       } else {
-        for (idx = 0; idx < step.length; idx++) {
-          this._insertSound(newSteps, divider * stepCounter, step[idx]);
-        }
+        newSteps[divider * stepCounter] = newSteps[divider * stepCounter].concat(step);
       }
     }
   });
@@ -144,7 +124,8 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
 /**
  * {
  *  preset: 'simple-mode',
- *  note: 'a1'
+ *  note: 'a1',
+ *  id: 'foo-bar'
  * }
  *
  * @method getPatch
@@ -164,12 +145,61 @@ Generator.prototype.registerSound = function(shape) {
 
   var stepNumber = this.calculateStepNumber(shape);
 
-  this._insertSound(this._steps, stepNumber, sound);
+  this._insertSound(stepNumber, sound);
 };
 
-Generator.prototype.scheduleSounds = function() {
-  var executor = this._executor;
+Generator.prototype.update = function(shape) {
+  var sound = this.getPatch(shape);
 
+  var stepNumber = this.calculateStepNumber(shape);
+
+  this.moveSound(stepNumber, sound);
+
+  return this.getSchedule();
+};
+
+/**
+ * Moves sound to a new step number.
+ *
+ * @method moveSound
+ *
+ * @param  {[type]}  newStepNumber [description]
+ * @param  {[type]}  sound         [description]
+ *
+ * @return {[type]}                [description]
+ */
+Generator.prototype.moveSound = function(newStepNumber, sound) {
+  var removeIdx;
+
+  this.loopSteps(function(step, stepIndex) {
+    if (find(step, { id: sound.id })) {
+      removeIdx = stepIndex;
+
+      return false;
+    }
+  });
+
+  if (typeof removeIdx === 'number') {
+    this.removeSound(removeIdx, sound);
+  }
+
+  this._insertSound(newStepNumber, sound);
+};
+
+Generator.prototype.removeSound = function(stepIndex, sound) {
+  var step = this._steps[stepIndex],
+      currSound,
+      currIndex;
+
+  if (step) {
+    currSound = find(step, { id: sound.id });
+    currIndex = step.indexOf(currSound);
+
+    step.splice(currIndex, 1, sound);
+  }
+};
+
+Generator.prototype.getSchedule = function() {
   var sounds = {},
       steps = this._steps,
       divider;
@@ -189,15 +219,13 @@ Generator.prototype.scheduleSounds = function() {
   // reset changed
   steps.changed = [];
 
-  executor.updateSchedule(sounds);
-
   return sounds;
 };
 
-Generator.prototype._insertSound = function(steps, stepNumber, sound) {
-  steps[stepNumber].push(sound);
+Generator.prototype._insertSound = function(stepNumber, sound) {
+  this._steps[stepNumber].push(sound);
 
-  if (steps.changed.indexOf(stepNumber) === -1) {
-    steps.changed.push(parseInt(stepNumber, 10));
+  if (this._steps.changed.indexOf(stepNumber) === -1) {
+    this._steps.changed.push(parseInt(stepNumber, 10));
   }
 };
