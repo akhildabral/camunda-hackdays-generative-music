@@ -2,7 +2,7 @@
 
 var find = require('lodash/collection/find');
 
-var is = require('bpmn-js/lib/util/ModelUtil');
+var is = require('bpmn-js/lib/util/ModelUtil').is;
 
 var Generator = require('./generator');
 
@@ -37,8 +37,7 @@ function GeneratorManager(eventBus, executor) {
   eventBus.on('create.end', function(context) {
     var shape = context.shape;
 
-    // if generator
-    if (!this.exists(shape) && is('bpmn:StartEvent')) {
+    if (is(shape, 'bpmn:StartEvent')) {
       this.createNewGenerator(shape);
     }
 
@@ -64,34 +63,27 @@ function GeneratorManager(eventBus, executor) {
 
   }, this);
 
-  eventBus.on('move.end', function(context) {
+  eventBus.on('move.move.end', function(context) {
     var shape = context.shape;
 
-    var generator = this.findGenerator(shape),
-        sounds;
+    var generator = this.findGenerator(shape);
 
     if (!generator) {
       return;
     }
 
-    // updating could also mean that the sound is removed due to the element being too far away
-    sounds = generator.update(shape);
-
-    executor.updateSchedule(sounds);
+    generator.update(shape);
   }, this);
 
   // custom event when properties are updated
   eventBus.on('properties.update', function(context) {
     var newSubDivision = context.newSubDivision,
-        id = context.id,
-        sounds;
+        id = context.id;
 
     var generator = executor.getGenerator(id);
 
     if (generator) {
-      sounds = generator.updateSubDivision(newSubDivision);
-
-      executor.updateSchedule(sounds);
+      generator.updateSubDivision(newSubDivision);
     }
   }, this);
 }
@@ -122,5 +114,7 @@ GeneratorManager.prototype.createNewGenerator = function(shape) {
 
   var generator = new Generator(numSteps, DEFAULT_DIVISION, MAX_DIST);
 
-  executor.registerGenerator(shape.id, generator);
+  generator.id = shape.id;
+
+  executor.registerGenerator(generator);
 };

@@ -8,7 +8,6 @@ var MusicModeler = require('./music-modeler');
 
 var modeler = new MusicModeler({
   container: '#canvas',
-  keyboard: { bindTo: document },
   propertiesPanel: {
     parent: '#js-properties-panel'
   },

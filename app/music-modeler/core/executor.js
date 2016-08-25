@@ -1,8 +1,13 @@
 'use strict';
 
-function Executor(eventBus, audioContext) {
+var forEach = require('lodash/collection/forEach'),
+    find = require('lodash/collection/find');
+
+
+function Executor(eventBus, audioContext, soundMachine) {
   this._eventBus = eventBus;
   this._audioContext = audioContext;
+  this._soundMachine = soundMachine;
 
   this._generators = {};
 
@@ -27,15 +32,19 @@ function Executor(eventBus, audioContext) {
 
 module.exports = Executor;
 
-Executor.$inject = [ 'eventBus', 'audioContext' ];
+Executor.$inject = [ 'eventBus', 'audioContext', 'soundMachine' ];
 
 
-Executor.prototype.register = function(id, generator) {
-  this._generators[id] = generator;
+Executor.prototype.registerGenerator = function(generator) {
+  this._generators[generator.id] = generator;
 };
 
-Executor.prototype.getGenerator = function(id) {
-  return this._generators[id];
+Executor.prototype.getGenerator = function(generator) {
+  if (typeof id === 'string') {
+    return this._generators[generator];
+  }
+
+  return this._generators[generator.id];
 };
 
 Executor.prototype.getAllGenerators = function() {
@@ -47,46 +56,18 @@ Executor.prototype.removeGenerator = function(id) {
 };
 
 Executor.prototype.trigger = function(tick, nextNoteTime) {
-  // var soundMachine = this._soundMachine;
-  //
-  // var patches = this._steps[tick];
+  var soundMachine = this._soundMachine;
 
-  // soundMachine.playPatches(patches, nextNoteTime);
-};
+  var generators = this.getAllGenerators(),
+      sounds = [];
 
-/**
- * @example
- *
- * sounds: [
- *   {
- *     stepNumber: 4,
- *     patch: { audio descriptor }
- *   },
- *   {
- *     stepNumber: 8,
- *     patch: { audio descriptor }
- *   },
- *   {
- *     stepNumber: 10,
- *     patch: { audio descriptor }
- *   },
- * ]
- *
- *
- * this._steps = {
- *  4: [
- *    { audio descriptor },
- *    { audio descriptor }
- *  ]
- * }
- *
- * @method registerSounds
- */
-Executor.prototype.updateSchedule = function(sounds) {
-  var stepsLen = this._steps.length,
-      idx;
+  forEach(generators, function(generator) {
+    var step = generator.getStep(tick);
 
-  for (idx; idx < stepsLen; idx++) {
-    this._steps[idx] = idx;
-  }
+    if (step && step.length) {
+      sounds = sounds.concat(step);
+    }
+  });
+
+  soundMachine.playPatches(sounds, nextNoteTime);
 };
