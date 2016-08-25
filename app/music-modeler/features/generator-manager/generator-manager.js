@@ -6,7 +6,12 @@ var is = require('bpmn-js/lib/util/ModelUtil');
 
 var Generator = require('./generator');
 
+var getDistance = require('../../util/CalcUtil').getDistance,
+    isMusicalEvent = require('../../util/MusicModelingUtil').isMusicalEvent;
+
 var DEFAULT_DIVISION = 4; // just need divider coz: 1 / n
+
+var MAX_DIST = 600;
 
 /**
  * @example
@@ -32,9 +37,16 @@ function GeneratorManager(eventBus, executor) {
   eventBus.on('create.end', function(context) {
     var shape = context.shape;
 
+    // if generator
     if (!this.exists(shape) && is('bpmn:StartEvent')) {
       this.createNewGenerator(shape);
     }
+
+    // if musical event
+    if(isMusicalEvent(shape)) {
+      console.log('musical event yawww');
+    }
+
   }, this);
 
   eventBus.on('shape.delete', function(context) {
@@ -48,8 +60,8 @@ function GeneratorManager(eventBus, executor) {
   eventBus.on('generator.connect', function(context) {
     var shape = context.shape;
 
-    // if shape doesn't surpass the max length
-    this.registerSound(shape);
+    // triggered on automatic connection of generator with musical event
+
   }, this);
 
   eventBus.on('move.end', function(context) {
@@ -62,6 +74,7 @@ function GeneratorManager(eventBus, executor) {
       return;
     }
 
+    // updating could also mean that the sound is removed due to the element being too far away
     sounds = generator.update(shape);
 
     executor.updateSchedule(sounds);
@@ -107,7 +120,7 @@ GeneratorManager.prototype.createNewGenerator = function(shape) {
 
   var numSteps = this._numSteps;
 
-  var generator = new Generator(numSteps, DEFAULT_DIVISION);
+  var generator = new Generator(numSteps, DEFAULT_DIVISION, MAX_DIST);
 
   executor.registerGenerator(shape.id, generator);
 };

@@ -13,12 +13,13 @@ var find = require('lodash/collection/find');
  *  changed: [ 4 ]
  * }
  */
-function Generator(numSteps, subDivision) {
+function Generator(numSteps, subDivision, maxDistance) {
   this._steps = {
     changed: []
   };
 
   this._subDivision = subDivision;
+  this.MAX_DIST = maxDistance;
 
   this.init(numSteps, subDivision);
 }
@@ -137,6 +138,8 @@ Generator.prototype.getPatch = function(shape) {
 };
 
 Generator.prototype.calculateStepNumber = function(shape) {
+
+  console.log('calculating step number');
 
 };
 
