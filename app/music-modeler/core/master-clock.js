@@ -14,7 +14,7 @@ function MasterClock(eventBus, audioContext) {
 
   this._nextNoteTime = 0.0;
   this._currentNote = 0.0;
-  this._scheduleAheadTime = 0.1; // seconds
+  this._scheduleAheadTime = 0.3; // seconds
 
 
   eventBus.on('import.done', function() {

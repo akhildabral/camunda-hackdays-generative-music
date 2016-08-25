@@ -66,6 +66,10 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
     // if musical event
     if (isMusicalEvent(shape)) {
       this.inGeneratorRange(shape, function(generator, generatorShape, stepNumber) {
+        if (stepNumber === null) {
+          return;
+        }
+
         // register sound on generator
         generator.registerElement(stepNumber, shape);
 
