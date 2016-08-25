@@ -27,7 +27,7 @@ var MAX_DIST = 600;
  *  changed: [ 4 ]
  * }
  */
-function GeneratorManager(eventBus, executor, elementRegistry) {
+function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
   this._eventBus = eventBus;
   this._executor = executor;
   this._elementRegistry = elementRegistry;
@@ -62,6 +62,8 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
           // register sound on generator
           generator.registerSound(stepNumber, sound);
+
+          modeling.connect(generatorShape, shape);
         }
       }, this);
     }
@@ -118,7 +120,7 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
 module.exports = GeneratorManager;
 
-GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry' ];
+GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry', 'modeling' ];
 
 
 GeneratorManager.prototype.findGenerator = function(shape) {
