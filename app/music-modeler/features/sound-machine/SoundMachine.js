@@ -44,13 +44,7 @@ SoundMachine.prototype.initDefaults = function() {
       delay: {
         delayTime: 0.5,
         feedback: 0.5
-      } /*,
-      reverb: {
-        duration: 1.0,
-        decay: 1.0,
-        reverse: false
       }
-      */
     })
   };
 
@@ -77,13 +71,7 @@ SoundMachine.prototype.initDefaults = function() {
       delay: {
         delayTime: 0.2,
         feedback: 0.5
-      }/*,
-      reverb: {
-        duration: 0.1,
-        decay: 1.0,
-        reverse: false
       }
-      */
     })
   };
 
