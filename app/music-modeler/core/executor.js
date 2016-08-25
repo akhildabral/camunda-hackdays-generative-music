@@ -40,7 +40,7 @@ Executor.prototype.registerGenerator = function(generator) {
 };
 
 Executor.prototype.getGenerator = function(generator) {
-  if (typeof id === 'string') {
+  if (typeof generator === 'string') {
     return this._generators[generator];
   }
 

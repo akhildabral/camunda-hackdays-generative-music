@@ -14,10 +14,11 @@ module.exports = function(group, element) {
       label : 'Time Division',
       modelProperty : 'timeDivision',
       selectOptions: [
-        { name: '1/1', value: '1/1' },
-        { name: '1/2', value: '1/2' },
-        { name: '1/4', value: '1/4' },
-        { name: '1/8', value: '1/8' }
+        { name: '1/1', value: '1' },
+        { name: '1/2', value: '2' },
+        { name: '1/4', value: '4' },
+        { name: '1/8', value: '8' },
+        { name: '1/16', value: '16' }
       ]
     }));
   }

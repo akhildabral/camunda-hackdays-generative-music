@@ -5,6 +5,8 @@ var find = require('lodash/collection/find'),
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
+var forEach = require('lodash/collection/forEach');
+
 var Generator = require('./generator');
 
 var getDistance = require('../../util/CalcUtil').getDistance,
@@ -92,16 +94,25 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
     generator.update(shape);
   }, this);
 
-  // custom event when properties are updated
-  eventBus.on('properties.update', function(context) {
-    var newSubDivision = context.newSubDivision,
-        id = context.id;
+  eventBus.on('elements.changed', function(context) {
 
-    var generator = executor.getGenerator(id);
+    var self = this;
 
-    if (generator) {
-      generator.updateSubDivision(newSubDivision);
-    }
+    forEach(context.elements, function(element) {
+
+      // if it is a generator
+      if (is(element, 'bpmn:StartEvent') && element.type !== 'label') {
+
+        var newSubDivision = element.businessObject.timeDivision;
+
+        var generator = self._executor.getGenerator(element.id);
+
+        if (generator) {
+          generator.updateSubDivision(newSubDivision);
+        }
+      }
+    });
+
   }, this);
 }
 
