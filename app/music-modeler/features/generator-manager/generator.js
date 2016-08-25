@@ -2,6 +2,8 @@
 
 var find = require('lodash/collection/find');
 
+var getDistance = require('../../util/CalcUtil').getDistance;
+
 /**
  * @example
  *
@@ -127,52 +129,13 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
   return this._steps;
 };
 
-/**
- * {
- *  preset: 'simple-mode',
- *  note: 'a1',
- *  id: 'foo-bar'
- * }
- *
- * @method getSound
- *
- * @return {Object}
- */
-Generator.prototype.getSound = function(shape) {
-  if (!shape.businessObject.preset
-      || shape.businessObject.note
-      || shape.businessObject.id) {
-    throw new Error('missing properties, can not get sound');
-  }
-
-  return {
-    preset: shape.businessObject.preset,
-    note: shape.businessObject.note,
-    id: shape.businessObject.id
-  };
-};
-
-Generator.prototype.calculateStepNumber = function(shape) {
-
-  console.log('calculating step number');
-
-};
-
-Generator.prototype.registerSound = function(shape) {
-  var sound = this.getSound(shape);
-
-  var stepNumber = this.calculateStepNumber(shape);
-
+Generator.prototype.registerSound = function(stepNumber, sound) {
   this._insertSound(stepNumber, sound);
 
   return this.getSchedule();
 };
 
-Generator.prototype.update = function(shape) {
-  var sound = this.getSound(shape);
-
-  var stepNumber = this.calculateStepNumber(shape);
-
+Generator.prototype.update = function(stepNumber, sound) {
   this.moveSound(stepNumber, sound);
 
   return this.getSchedule();

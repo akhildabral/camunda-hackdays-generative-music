@@ -56,8 +56,11 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
         if (getDistance(shape, generatorShape) <= MAX_DIST) {
 
+          var stepNumber = self.calculateStepNumber(shape, generatorShape);
+          var sound = self.getSound(shape);
+
           // register sound on generator
-          generator.registerSound(shape);
+          generator.registerSound(stepNumber, sound);
 
         }
 
@@ -120,6 +123,34 @@ module.exports = GeneratorManager;
 
 GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry' ];
 
+GeneratorManager.prototype.calculateStepNumber = function(shape, generatorShape) {
+  return 0;
+}
+
+/**
+ * {
+ *  preset: 'simple-mode',
+ *  note: 'a1',
+ *  id: 'foo-bar'
+ * }
+ *
+ * @method getSound
+ *
+ * @return {Object}
+ */
+GeneratorManager.prototype.getSound = function(shape) {
+  if (!shape.businessObject.preset
+      || !shape.businessObject.note
+      || !shape.businessObject.id) {
+    throw new Error('missing properties, can not get sound');
+  }
+
+  return {
+    preset: shape.businessObject.preset,
+    note: shape.businessObject.note,
+    id: shape.businessObject.id
+  };
+};
 
 GeneratorManager.prototype.findGenerator = function(shape) {
   var executor = this._executor;
