@@ -31,15 +31,21 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
 
       var shape = elementFactory.createShape(assign({ type: type }, options));
 
+      var bo = shape.businessObject;
+
       if (options) {
-        shape.businessObject.di.isExpanded = options.isExpanded;
+        bo.di.isExpanded = options.isExpanded;
 
         if (options.preset) {
-          shape.businessObject.preset = options.preset;
+          bo.preset = options.preset;
         }
 
         if (options.note) {
-          shape.businessObject.note = options.note;
+          bo.note = options.note;
+        }
+
+        if (options.subDivision) {
+          bo.subDivision = options.subDivision;
         }
       }
 
