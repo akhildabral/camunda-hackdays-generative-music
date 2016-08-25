@@ -1,5 +1,7 @@
 'use strict';
 
+var pick = require('lodash/object/pick');
+
 var Synthesizer = require('../synthesizer/Synthesizer'),
     Sampler = require('../sampler/Sampler');
 
@@ -20,46 +22,145 @@ module.exports = SoundMachine;
 
 SoundMachine.prototype.initDefaults = function() {
 
-  var synthesizerBell = new Synthesizer(this._audioContext, this._compressor, {
-    oscillator: {
-      type: 'sine'
-    },
-    envelope: {
-      attack: 0.1,
-      release: 0.1,
-      amplitude: 0.3
-    },
-    filter: {
-      type: 'lowpass',
-      q: '6',
-      frequency: '2000'
-    },
-    delay: {
-      delayTime: 0.5,
-      feedback: 0.5
-    },
-    reverb: {
-      duration: 1.0,
-      decay: 1.0,
-      reverse: false
-    }
-  });
+  var synthesizerBell = {
+    label: 'Bell',
+    type: 'instrument',
+    preset: new Synthesizer(this._audioContext, this._compressor, {
+      oscillator: {
+        type: 'sine'
+      },
+      envelope: {
+        attack: 0.1,
+        release: 0.1,
+        amplitude: 0.3
+      },
+      filter: {
+        type: 'lowpass',
+        q: '6',
+        frequency: '2000'
+      },
+      delay: {
+        delayTime: 0.5,
+        feedback: 0.5
+      },
+      reverb: {
+        duration: 1.0,
+        decay: 1.0,
+        reverse: false
+      }
+    })
+  };
 
   this._presets['synthesizer:bell'] = synthesizerBell;
 
-  var samplerKick = new Sampler(this._audioContext, this._compressor, {
-    url: 'samples/kick.wav',
-    rootKey: 'c3'
-  });
+
+  // 808 kick
+  var samplerKick = {
+    label: '808 Kick',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/kick.wav',
+      rootKey: 'c3'
+    })
+  }
 
   this._presets['sampler:kick'] = samplerKick;
 
-  var samplerMusic = new Sampler(this._audioContext, this._compressor, {
-    url: 'samples/music.wav',
-    rootKey: 'c3'
-  });
+  // 808 clap
+  var samplerClap = {
+    label: '808 Clap',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/clap.wav',
+      rootKey: 'c3'
+    })
+  }
 
-  this._presets['sampler:music'] = samplerMusic;
+  this._presets['sampler:clap'] = samplerClap;
+
+  // 808 clave
+  var samplerClave = {
+    label: '808 Clave',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/clave.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:clave'] = samplerClave;
+
+  // 808 closed hat
+  var samplerClosedHat = {
+    label: '808 Closed Hat',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/closedhat.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:closedhat'] = samplerClosedHat;
+
+  // 808 cowbell
+  var samplerCowbell = {
+    label: '808 Cowbell',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/cowbell.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:cowbell'] = samplerCowbell;
+
+  // 808 crash
+  var samplerCrash = {
+    label: '808 Crash',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/crash.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:crash'] = samplerCrash;
+
+  // 808 open hat
+  var samplerOpenHat = {
+    label: '808 Open Hat',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/openhat.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:openhat'] = samplerOpenHat;
+
+  // 808 rim
+  var samplerRim = {
+    label: '808 Rim',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/rim.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:rim'] = samplerRim;
+
+  // 808 snare
+  var samplerSnare = {
+    label: '808 Snare',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/snare.wav',
+      rootKey: 'c3'
+    })
+  }
+
+  this._presets['sampler:snare'] = samplerSnare;
 
 };
 
@@ -68,8 +169,7 @@ SoundMachine.prototype.playSoundAt = function(sound, time) {
     throw new Error('preset not found');
   }
 
-  // default note for drum sounds
-  this._presets[sound.preset].playNoteAt(sound.note || 'c1', time);
+  this._presets[sound.preset].preset.playNoteAt(sound.note, time);
 }
 
 SoundMachine.prototype.playSoundsAt = function(sounds, time) {
@@ -96,6 +196,12 @@ SoundMachine.prototype.removeSound = function(name) {
   delete this._presets[name];
 }
 
-SoundMachine.prototype.getSounds = function() {
+SoundMachine.prototype.getAll = function() {
   return this._presets;
+}
+
+SoundMachine.prototype.getSounds = function(type) {
+  return pick(this._presets, function(preset) {
+    return preset.type === type;
+  });
 }

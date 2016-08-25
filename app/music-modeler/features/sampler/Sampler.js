@@ -41,7 +41,7 @@ Sampler.prototype.playFrequencyAt = function(frequency, time) {
   var samplerVoice = new SamplerVoice(this._audioContext, {
     buffer: this._sampleBuffer,
     pitch: pitch
-  });
+  }, this._config);
 
   samplerVoice.connect(this._output);
   samplerVoice.playAt(time);
