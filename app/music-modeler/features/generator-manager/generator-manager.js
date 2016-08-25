@@ -104,7 +104,7 @@ GeneratorManager.prototype.findGenerator = function(shape) {
 };
 
 GeneratorManager.prototype.exists = function(shape) {
-  return !!this._generators[shape.id];
+  return !!this._executor._generators[shape.id];
 };
 
 GeneratorManager.prototype.createNewGenerator = function(shape) {
