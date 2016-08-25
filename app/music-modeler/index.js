@@ -4,8 +4,6 @@ var Modeler = require('bpmn-js/lib/Modeler');
 
 var inherits = require('inherits');
 
-var audioContext = new window.AudioContext();
-
 function MusicModeler(options) {
   Modeler.call(this, options);
 }
@@ -15,11 +13,12 @@ inherits(MusicModeler, Modeler);
 MusicModeler.prototype._modules = [].concat(
   MusicModeler.prototype._modules,
   [
-    {
-      audioContext: [ 'value', audioContext ]
-    },
+    { audioContext: [ 'value', new window.AudioContext() ] },
     require('./core'),
-    require('./features/generator')
+    require('./features/generator'),
+    require('./features/context-pad'),
+    require('./features/palette'),
+    require('./features/sound-machine')
   ]
 );
 

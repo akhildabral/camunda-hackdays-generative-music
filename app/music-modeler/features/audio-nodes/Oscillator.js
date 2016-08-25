@@ -1,12 +1,12 @@
 'use strict';
 
-function Oscillator(audioContext, config) {
+function Oscillator(audioContext, config, frequency) {
     this.audioContext = audioContext;
     var config = config || { type: 'sine' };
 
     this.oscillator = this.audioContext.createOscillator();
     this.oscillator.type = config.type;
-    this.setFrequency(440);
+    this.oscillator.frequency.value = frequency || 440.0;
     this.oscillator.start(0);
 
     // configure input and output
@@ -14,18 +14,6 @@ function Oscillator(audioContext, config) {
     this.output = this.oscillator;
 
 }
-
-Oscillator.prototype.setFrequency = function(frequency) {
-
-  this.oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
-
-};
-
-Oscillator.prototype.setFrequencyAt = function(frequency, targetTime) {
-
-  this.oscillator.frequency.setValueAtTime(frequency, targetTime);
-
-};
 
 Oscillator.prototype.connect = function(node) {
 
