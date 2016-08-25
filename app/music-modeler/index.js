@@ -14,6 +14,7 @@ MusicModeler.prototype._modules = [].concat(
   MusicModeler.prototype._modules,
   [
     { audioContext: [ 'value', new window.AudioContext() ] },
+    { bendpoints: [ 'type', function() {} ]},
     require('./core'),
     require('./features/generator-manager'),
     require('./features/context-pad'),
