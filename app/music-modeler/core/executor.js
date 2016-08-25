@@ -1,7 +1,7 @@
 'use strict';
 
 var forEach = require('lodash/collection/forEach'),
-    find = require('lodash/collection/find');
+    pick = require('lodash/object/pick');
 
 
 function Executor(eventBus, audioContext, soundMachine) {
@@ -59,21 +59,30 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
   var soundMachine = this._soundMachine;
 
   var generators = this.getAllGenerators(),
-      sounds = [];
+      generatorIds = Object.keys(generators),
+      sounds = [],
+      elements = [],
+      idx = 0;
 
-  forEach(generators, function(generator) {
-    var step = generator.getStep(tick);
+  for (idx; idx < generatorIds.length; idx++) {
+    var step = generators[generatorIds[idx]].getStep(tick);
 
     if (step && step.length) {
-      sounds = sounds.concat(step);
+      elements = elements.concat(step);
     }
-  });
+  }
+
+  if (!elements.length) {
+    return;
+  }
+
+  for (idx = 0; idx < elements.length; idx++) {
+    sounds.push(pick(elements[idx].businessObject, [ 'preset', 'note' ]));
+  }
 
   if (!sounds.length) {
     return;
   }
-
-  console.log('Call on me');
 
   soundMachine.playPatches(sounds, nextNoteTime);
 };

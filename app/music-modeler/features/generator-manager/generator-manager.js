@@ -58,10 +58,9 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
         if (getDistance(shape, generatorShape) <= MAX_DIST) {
 
           var stepNumber = generator.calculateStepNumber(shape, generatorShape);
-          var sound = generator.createSound(shape);
 
           // register sound on generator
-          generator.registerSound(stepNumber, sound);
+          generator.registerElement(stepNumber, shape);
 
           modeling.connect(generatorShape, shape);
         }
