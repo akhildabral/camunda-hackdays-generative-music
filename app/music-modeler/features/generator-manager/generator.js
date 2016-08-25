@@ -1,8 +1,13 @@
 'use strict';
 
-var find = require('lodash/collection/find');
+var find = require('lodash/collection/find'),
+    pick = require('lodash/object/pick');
 
-var getDistance = require('../../util/CalcUtil').getDistance;
+function has(obj, keys) {
+  var actualKeys = pick(obj, keys);
+
+  return actualKeys.length !== keys.length;
+}
 
 /**
  * @example
@@ -127,6 +132,49 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
   this._steps = newSteps;
 
   return this._steps;
+};
+
+/**
+ * {
+ *  preset: 'simple-mode',
+ *  note: 'a1',
+ *  id: 'foo-bar'
+ * }
+ *
+ * @method createSound
+ *
+ * @return {Object}
+ */
+Generator.prototype.createSound = function(shape) {
+  var businessObject = shape.businessObject;
+
+  if (!has(businessObject, [ 'preset', 'note', 'id' ])) {
+    throw new Error('missing properties, can not get sound');
+  }
+
+  return {
+    preset: businessObject.preset,
+    note: businessObject.note,
+    id: businessObject.id
+  };
+};
+
+Generator.prototype.getStepNumFromSound = function(shape) {
+  var stepNumber;
+
+  this.loopSteps(function(step, stepIndex) {
+    if (step.length) {
+      stepNumber = find(step, { id: shape.id }) ? stepIndex : null;
+    }
+  });
+
+  return stepNumber;
+};
+
+Generator.prototype.calculateStepNumber = function(shape) {
+
+  console.log('calculating step number');
+  return 0;
 };
 
 Generator.prototype.registerSound = function(stepNumber, sound) {

@@ -9,7 +9,7 @@ var forEach = require('lodash/collection/forEach');
 
 var Generator = require('./generator');
 
-var getDistance = require('../../util/CalcUtil').getDistance,
+var getDistance = require('diagram-js/lib/util/Geometry').pointDistance,
     isMusicalEvent = require('../../util/MusicModelingUtil').isMusicalEvent;
 
 var DEFAULT_DIVISION = 4; // just need divider coz: 1 / n
@@ -32,8 +32,6 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
   this._executor = executor;
   this._elementRegistry = elementRegistry;
 
-  var self = this;
-
   eventBus.on('master-clock.start', function(context) {
     var numSteps = context.numSteps;
 
@@ -41,33 +39,32 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
   }, this);
 
   eventBus.on('create.end', function(context) {
-    var shape = context.shape;
+    var shape = context.shape,
+        generators;
 
     if (is(shape, 'bpmn:StartEvent')) {
       this.createNewGenerator(shape);
     }
 
     // if musical event
-    if(isMusicalEvent(shape)) {
+    if (isMusicalEvent(shape)) {
+
+      generators = executor.getAllGenerators();
 
       // check distance for all generators
-      forEach(this._executor._generators, function(generator) {
-        var generatorShape = self._elementRegistry.get(generator.id);
+      forEach(generators, function(generator) {
+        var generatorShape = elementRegistry.get(generator.id);
 
         if (getDistance(shape, generatorShape) <= MAX_DIST) {
 
-          var stepNumber = self.calculateStepNumber(shape, generatorShape);
-          var sound = self.getSound(shape);
+          var stepNumber = generator.calculateStepNumber(shape, generatorShape);
+          var sound = generator.createSound(shape);
 
           // register sound on generator
           generator.registerSound(stepNumber, sound);
-
         }
-
-      });
-
+      }, this);
     }
-
   }, this);
 
   eventBus.on('shape.delete', function(context) {
@@ -85,7 +82,7 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
   }, this);
 
-  eventBus.on('move.move.end', function(context) {
+  eventBus.on('move.end', function(context) {
     var shape = context.shape;
 
     var generator = this.findGenerator(shape);
@@ -99,22 +96,22 @@ function GeneratorManager(eventBus, executor, elementRegistry) {
 
   eventBus.on('elements.changed', function(context) {
 
-    var self = this;
-
     forEach(context.elements, function(element) {
+      var newSubDivision,
+          generator;
 
       // if it is a generator
       if (is(element, 'bpmn:StartEvent') && element.type !== 'label') {
 
-        var newSubDivision = element.businessObject.timeDivision;
+        newSubDivision = element.businessObject.timeDivision;
 
-        var generator = self._executor.getGenerator(element.id);
+        generator = executor.getGenerator(element.id);
 
         if (generator) {
           generator.updateSubDivision(newSubDivision);
         }
       }
-    });
+    }, this);
 
   }, this);
 }
@@ -123,34 +120,6 @@ module.exports = GeneratorManager;
 
 GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry' ];
 
-GeneratorManager.prototype.calculateStepNumber = function(shape, generatorShape) {
-  return 0;
-}
-
-/**
- * {
- *  preset: 'simple-mode',
- *  note: 'a1',
- *  id: 'foo-bar'
- * }
- *
- * @method getSound
- *
- * @return {Object}
- */
-GeneratorManager.prototype.getSound = function(shape) {
-  if (!shape.businessObject.preset
-      || !shape.businessObject.note
-      || !shape.businessObject.id) {
-    throw new Error('missing properties, can not get sound');
-  }
-
-  return {
-    preset: shape.businessObject.preset,
-    note: shape.businessObject.note,
-    id: shape.businessObject.id
-  };
-};
 
 GeneratorManager.prototype.findGenerator = function(shape) {
   var executor = this._executor;
