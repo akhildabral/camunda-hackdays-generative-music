@@ -9,24 +9,20 @@ function PaletteProvider(palette, create, elementFactory, spaceTool, lassoTool) 
 
   this._create = create;
   this._elementFactory = elementFactory;
-  this._spaceTool = spaceTool;
-  this._lassoTool = lassoTool;
 
   palette.registerProvider(this);
 }
 
 module.exports = PaletteProvider;
 
-PaletteProvider.$inject = [ 'palette', 'create', 'elementFactory', 'spaceTool', 'lassoTool' ];
+PaletteProvider.$inject = [ 'palette', 'create', 'elementFactory' ];
 
 
 PaletteProvider.prototype.getPaletteEntries = function(element) {
 
   var actions  = {},
       create = this._create,
-      elementFactory = this._elementFactory,
-      spaceTool = this._spaceTool,
-      lassoTool = this._lassoTool;
+      elementFactory = this._elementFactory;
 
 
   function createAction(type, group, className, title, options) {
@@ -64,30 +60,6 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
   }
 
   assign(actions, {
-    'lasso-tool': {
-      group: 'tools',
-      className: 'bpmn-icon-lasso-tool',
-      title: 'Activate the lasso tool',
-      action: {
-        click: function(event) {
-          lassoTool.activateSelection(event);
-        }
-      }
-    },
-    'space-tool': {
-      group: 'tools',
-      className: 'bpmn-icon-space-tool',
-      title: 'Activate the create/remove space tool',
-      action: {
-        click: function(event) {
-          spaceTool.activateSelection(event);
-        }
-      }
-    },
-    'tool-separator': {
-      group: 'tools',
-      separator: true
-    },
     'create.start-event': createAction(
       'bpmn:StartEvent', 'generator', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
     ),
