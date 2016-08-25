@@ -1,5 +1,7 @@
 'use strict';
 
+var forEach = require('lodash/collection/forEach');
+
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
 var domQuery = require('min-dom/lib/query'),
@@ -11,18 +13,23 @@ module.exports = function(group, element) {
 
   if (is(element, 'bpmn:EndEvent')) {
 
-    group.entries.push(entryFactory.selectBox({
+    var sounds = window.bpmnjs.get('soundMachine').getSounds('instrument');
+
+    var selectOptions = [ { name: '', value: '' } ];
+
+    forEach(sounds, function(sound, key) {
+      selectOptions.push({ name: sound.label, value: key });
+    });
+
+    var selectBox = entryFactory.selectBox({
       id : 'preset',
       description : 'Select a preset',
       label : 'Preset',
       modelProperty : 'preset',
-      selectOptions: [
-        { name: 'Bli', value: 'bli' },
-        { name: 'Bla', value: 'bla' },
-        { name: 'Blub', value: 'blub' },
-      ]
-    }));
+      selectOptions: selectOptions
+    });
 
+    group.entries.push(selectBox);
 
     var id = 'music-note',
         label = 'music-note';

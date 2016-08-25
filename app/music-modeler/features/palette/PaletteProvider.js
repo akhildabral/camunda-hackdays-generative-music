@@ -103,7 +103,7 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-cancel', 'Create Instrument D', { eventDefinitionType: 'bpmn:CancelEventDefinition' }
     ),
     'create.compensation-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-compensation', 'Create Instrument E', { eventDefinitionType: 'bpmn:CompensationEventDefinition' }
+      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-compensation', 'Create Instrument E', { eventDefinitionType: 'bpmn:CompensateEventDefinition' }
     ),
     'instrument-separator': {
       group: 'instrument',
