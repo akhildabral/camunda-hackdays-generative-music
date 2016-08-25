@@ -9,10 +9,10 @@ module.exports = function(group, element) {
 
   if (is(element, 'bpmn:StartEvent')) {
     group.entries.push(entryFactory.selectBox({
-      id : 'timeDivision',
+      id : 'subDivision',
       description : 'Specify the time division',
       label : 'Time Division',
-      modelProperty : 'timeDivision',
+      modelProperty : 'subDivision',
       selectOptions: [
         { name: '1/1', value: '1' },
         { name: '1/2', value: '2' },

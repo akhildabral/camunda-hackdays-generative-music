@@ -65,7 +65,11 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
 
   assign(actions, {
     'create.start-event': createAction(
-      'bpmn:StartEvent', 'generator', 'bpmn-icon-start-event-message', 'Create Generator', { eventDefinitionType: 'bpmn:MessageEventDefinition' }
+      'bpmn:StartEvent',
+      'generator',
+      'bpmn-icon-start-event-message',
+      'Create Generator',
+      { eventDefinitionType: 'bpmn:MessageEventDefinition', subDivision: 4 }
     ),
     'generator-separator': {
       group: 'generator',
