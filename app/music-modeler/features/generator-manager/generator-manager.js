@@ -92,7 +92,7 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
         var stepNumber = generator.getStepNumFromSound(element);
 
         if (stepNumber) {
-          generator.removeSound(stepNumber, element);
+          generator.removeElement(element);
         }
       });
 

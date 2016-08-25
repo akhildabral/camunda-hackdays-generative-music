@@ -4,10 +4,18 @@ var parser = require('note-parser');
 
 var SynthesizerVoice = require('./SynthesizerVoice');
 
+var Reverb = require('../audio-nodes/Reverb');
+
 function Synthesizer(audioContext, output, config) {
 
   this._audioContext = audioContext;
+  this._reverb = new Reverb(this._audioContext, {
+    duration: 1,
+    decay: 0.5,
+    reverse: false
+  });
   this._output = output;
+  this._reverb.connect(this._output);
 
   if (!config) {
     throw new Error('no configuration found');
@@ -27,6 +35,7 @@ Synthesizer.prototype.playFrequencyAt = function(frequency, time, tempo) {
 
   var synthesizerVoice = new SynthesizerVoice(this._audioContext, this._config, frequency, tempo);
 
+  // TODO connect to reverb!
   synthesizerVoice.connect(this._output);
   synthesizerVoice.playAt(time);
 
