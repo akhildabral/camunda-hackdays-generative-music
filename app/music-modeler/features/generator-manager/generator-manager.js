@@ -96,10 +96,13 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
     // if musical event
     if (isMusicalEvent(element)) {
 
-      forEach(self._executor.getAllGenerators(), function(generator) {
+      forEach(executor.getAllGenerators(), function(generator) {
+        var stepNumber = generator.getStepNumFromSound(element);
 
-        // remove from generator if registered
-        console.log('removing from generator');
+        if (stepNumber) {
+          generator.removeSound(stepNumber, element);
+        }
+
       });
 
     }
