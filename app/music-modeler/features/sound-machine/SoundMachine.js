@@ -6,8 +6,9 @@ var pick = require('lodash/object/pick'),
 var Synthesizer = require('../synthesizer/Synthesizer'),
     Sampler = require('../sampler/Sampler');
 
-function SoundMachine(audioContext) {
+function SoundMachine(audioContext, masterClock) {
   this._audioContext = audioContext;
+  this._masterClock = masterClock;
 
   this._compressor = audioContext.createDynamicsCompressor();
   this._compressor.connect(audioContext.destination);
@@ -17,7 +18,7 @@ function SoundMachine(audioContext) {
   this.initDefaults();
 }
 
-SoundMachine.$inject = [ 'audioContext' ];
+SoundMachine.$inject = [ 'audioContext', 'masterClock' ];
 
 module.exports = SoundMachine;
 
@@ -42,7 +43,7 @@ SoundMachine.prototype.initDefaults = function() {
         frequency: '2000'
       },
       delay: {
-        delayTime: 0.5,
+        delayTime: 0.5, // TODO take current tempo into account
         feedback: 0.5
       }
     })

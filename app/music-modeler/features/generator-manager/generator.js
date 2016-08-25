@@ -3,6 +3,8 @@
 var find = require('lodash/collection/find'),
     pick = require('lodash/object/pick');
 
+var getDistance = require('diagram-js/lib/util/Geometry').pointDistance;
+
 function has(obj, keys) {
   var actualKeys = pick(obj, keys);
 
@@ -171,10 +173,15 @@ Generator.prototype.getStepNumFromSound = function(shape) {
   return stepNumber;
 };
 
-Generator.prototype.calculateStepNumber = function(shape) {
+Generator.prototype.calculateStepNumber = function(shape, generatorManager) {
 
-  console.log('calculating step number');
-  return 0;
+  var distance = getDistance(shape, generatorManager);
+
+  var stepSize = this.MAX_DIST / this._subDivision;
+
+  var stepNumber = Math.floor(distance / stepSize) * (16 / this._subDivision);
+
+  return stepNumber;
 };
 
 Generator.prototype.registerSound = function(stepNumber, sound) {

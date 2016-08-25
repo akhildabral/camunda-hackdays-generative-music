@@ -12,7 +12,7 @@ var Generator = require('./generator');
 var getDistance = require('diagram-js/lib/util/Geometry').pointDistance,
     isMusicalEvent = require('../../util/MusicModelingUtil').isMusicalEvent;
 
-var DEFAULT_DIVISION = 4; // just need divider coz: 1 / n
+var DEFAULT_DIVISION = 16; // just need divider coz: 1 / n
 
 var MAX_DIST = 600;
 

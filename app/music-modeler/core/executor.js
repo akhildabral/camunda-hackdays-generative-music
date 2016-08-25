@@ -69,5 +69,11 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
     }
   });
 
+  if (!sounds.length) {
+    return;
+  }
+
+  console.log('Call on me');
+
   soundMachine.playPatches(sounds, nextNoteTime);
 };
