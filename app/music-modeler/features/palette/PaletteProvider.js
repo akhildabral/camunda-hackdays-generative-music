@@ -32,10 +32,15 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
   function createAction(type, group, className, title, options) {
 
     function createListener(event) {
+
       var shape = elementFactory.createShape(assign({ type: type }, options));
 
       if (options) {
         shape.businessObject.di.isExpanded = options.isExpanded;
+
+        if (options.preset) {
+          shape.businessObject.preset = options.preset;
+        }
       }
 
       create.start(event, shape);
@@ -91,38 +96,72 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       separator: true
     },
     'create.error-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-error', 'Create Instrument A', { eventDefinitionType: 'bpmn:ErrorEventDefinition' }
+      'bpmn:EndEvent', 'instrument',
+      'bpmn-icon-end-event-error',
+      'Create Bell',
+      { eventDefinitionType: 'bpmn:ErrorEventDefinition', preset: "synthesizerBell" }
     ),
     'create.escalation-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-escalation', 'Create Instrument B', { eventDefinitionType: 'bpmn:EscalationEventDefinition' }
+      'bpmn:EndEvent', 'instrument',
+      'bpmn-icon-end-event-escalation',
+      'Create Square Lead',
+      { eventDefinitionType: 'bpmn:EscalationEventDefinition', preset: "synthesizerSquarelead" }
     ),
     'create.signal-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-signal', 'Create Instrument C', { eventDefinitionType: 'bpmn:SignalEventDefinition' }
+      'bpmn:EndEvent',
+      'instrument',
+      'bpmn-icon-end-event-signal',
+      'Create Instrument C',
+      { eventDefinitionType: 'bpmn:SignalEventDefinition' }
     ),
     'create.cancel-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-cancel', 'Create Instrument D', { eventDefinitionType: 'bpmn:CancelEventDefinition' }
+      'bpmn:EndEvent',
+      'instrument',
+      'bpmn-icon-end-event-cancel',
+      'Create Instrument D',
+      { eventDefinitionType: 'bpmn:CancelEventDefinition' }
     ),
     'create.compensation-end-event': createAction(
-      'bpmn:EndEvent', 'instrument', 'bpmn-icon-end-event-compensation', 'Create Instrument E', { eventDefinitionType: 'bpmn:CompensateEventDefinition' }
+      'bpmn:EndEvent',
+      'instrument',
+      'bpmn-icon-end-event-compensation',
+      'Create Instrument E',
+      { eventDefinitionType: 'bpmn:CompensateEventDefinition' }
     ),
     'instrument-separator': {
       group: 'instrument',
       separator: true
     },
     'create.service-task': createAction(
-      'bpmn:ServiceTask', 'drum', 'bpmn-icon-service-task', 'Create Kick Drum'
+      'bpmn:ServiceTask',
+      'drum',
+      'bpmn-icon-service-task',
+      'Create 808 Kick',
+      { preset: 'samplerKick' }
     ),
     'create.user-task': createAction(
-      'bpmn:UserTask', 'drum', 'bpmn-icon-user-task', 'Create Snare Drum'
+      'bpmn:UserTask',
+      'drum',
+      'bpmn-icon-user-task',
+      'Create Snare Drum'
     ),
     'create.manual-task': createAction(
-      'bpmn:ManualTask', 'drum', 'bpmn-icon-manual-task', 'Create Clap'
+      'bpmn:ManualTask',
+      'drum',
+      'bpmn-icon-manual-task',
+      'Create Clap'
     ),
     'create.business-rule-task': createAction(
-      'bpmn:BusinessRuleTask', 'drum', 'bpmn-icon-business-rule-task', 'Create Closed HiHat'
+      'bpmn:BusinessRuleTask',
+      'drum',
+      'bpmn-icon-business-rule-task',
+      'Create Closed HiHat'
     ),
     'create.script-task': createAction(
-      'bpmn:ScriptTask', 'drum', 'bpmn-icon-script-task', 'Create Open HiHat'
+      'bpmn:ScriptTask',
+      'drum',
+      'bpmn-icon-script-task',
+      'Create Open HiHat'
     ),
   });
 
