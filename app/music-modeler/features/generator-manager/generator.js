@@ -1,15 +1,9 @@
 'use strict';
 
-var find = require('lodash/collection/find'),
-    pick = require('lodash/object/pick');
+var find = require('lodash/collection/find');
 
 var getDistance = require('diagram-js/lib/util/Geometry').pointDistance;
 
-function has(obj, keys) {
-  var actualKeys = pick(obj, keys);
-
-  return actualKeys.length !== keys.length;
-}
 
 /**
  * @example
@@ -136,37 +130,12 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
   return this._steps;
 };
 
-/**
- * {
- *  preset: 'simple-mode',
- *  note: 'a1',
- *  id: 'foo-bar'
- * }
- *
- * @method createSound
- *
- * @return {Object}
- */
-Generator.prototype.createSound = function(shape) {
-  var businessObject = shape.businessObject;
-
-  if (!has(businessObject, [ 'preset', 'note', 'id' ])) {
-    throw new Error('missing properties, can not get sound');
-  }
-
-  return {
-    preset: businessObject.preset,
-    note: businessObject.note,
-    id: businessObject.id
-  };
-};
-
 Generator.prototype.getStepNumFromSound = function(shape) {
   var stepNumber;
 
   this.loopSteps(function(step, stepIndex) {
     if (step.length) {
-      stepNumber = find(step, { id: shape.id }) ? stepIndex : null;
+      stepNumber = find(step, shape) ? stepIndex : null;
     }
   });
 
@@ -184,14 +153,14 @@ Generator.prototype.calculateStepNumber = function(shape, generatorManager) {
   return stepNumber;
 };
 
-Generator.prototype.registerSound = function(stepNumber, sound) {
-  this._insertSound(stepNumber, sound);
+Generator.prototype.registerElement = function(stepNumber, element) {
+  this._insertSound(stepNumber, element);
 
   return this.getSchedule();
 };
 
-Generator.prototype.update = function(stepNumber, sound) {
-  this.moveSound(stepNumber, sound);
+Generator.prototype.update = function(stepNumber, element) {
+  this.moveSound(stepNumber, element);
 
   return this.getSchedule();
 };
@@ -206,11 +175,11 @@ Generator.prototype.update = function(stepNumber, sound) {
  *
  * @return {[type]}                [description]
  */
-Generator.prototype.moveSound = function(newStepNumber, sound) {
+Generator.prototype.moveSound = function(newStepNumber, element) {
   var removeIdx;
 
   this.loopSteps(function(step, stepIndex) {
-    if (find(step, { id: sound.id })) {
+    if (find(step, element)) {
       removeIdx = stepIndex;
 
       return false;
@@ -218,22 +187,22 @@ Generator.prototype.moveSound = function(newStepNumber, sound) {
   });
 
   if (typeof removeIdx === 'number') {
-    this.removeSound(removeIdx, sound);
+    this.removeSound(removeIdx, element);
   }
 
-  this._insertSound(newStepNumber, sound);
+  this._insertSound(newStepNumber, element);
 };
 
-Generator.prototype.removeSound = function(stepIndex, sound) {
+Generator.prototype.removeSound = function(stepIndex, element) {
   var step = this._steps[stepIndex],
       currSound,
       currIndex;
 
   if (step) {
-    currSound = find(step, { id: sound.id });
+    currSound = find(step, element);
     currIndex = step.indexOf(currSound);
 
-    step.splice(currIndex, 1, sound);
+    step.splice(currIndex, 1, element);
   }
 };
 
@@ -261,8 +230,8 @@ Generator.prototype.getSchedule = function() {
   return sounds;
 };
 
-Generator.prototype._insertSound = function(stepNumber, sound) {
-  this._steps[stepNumber].push(sound);
+Generator.prototype._insertSound = function(stepNumber, element) {
+  this._steps[stepNumber].push(element);
 
   if (this._steps.changed.indexOf(stepNumber) === -1) {
     this._steps.changed.push(parseInt(stepNumber, 10));
