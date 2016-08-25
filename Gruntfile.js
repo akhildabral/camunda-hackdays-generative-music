@@ -128,6 +128,20 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+    karma: {
+      options: {
+        configFile: 'test/config/karma.unit.js'
+      },
+      single: {
+        singleRun: true,
+        autoWatch: false,
+
+        browsers: TEST_BROWSERS
+      },
+      unit: {
+        browsers: TEST_BROWSERS
+      }
     }
   });
 
@@ -141,6 +155,10 @@ module.exports = function(grunt) {
     'connect:livereload',
     'watch'
   ]);
+
+  grunt.registerTask('test', [ 'karma:single' ]);
+
+  grunt.registerTask('auto-test', [ 'karma:unit' ]);
 
   grunt.registerTask('default', [ 'jshint', 'build' ]);
 };

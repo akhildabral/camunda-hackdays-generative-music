@@ -2,10 +2,9 @@
 
 var Modeler = require('bpmn-js/lib/Modeler');
 
-var assign = require('lodash/object/assign'),
-    isArray = require('lodash/lang/isArray');
-
 var inherits = require('inherits');
+
+var audioContext = new window.AudioContext();
 
 function MusicModeler(options) {
   Modeler.call(this, options);
@@ -16,7 +15,11 @@ inherits(MusicModeler, Modeler);
 MusicModeler.prototype._modules = [].concat(
   MusicModeler.prototype._modules,
   [
-    require('./core')
+    {
+      audioContext: [ 'value', audioContext ]
+    },
+    require('./core'),
+    require('./features/generator')
   ]
 );
 

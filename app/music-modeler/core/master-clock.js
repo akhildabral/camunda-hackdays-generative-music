@@ -1,44 +1,76 @@
 'use strict';
 
-var STEPS_NUM = 64 // this is the same as 4 bars
+var MASTER_TEMPO = 120,
+    NUM_STEPS = 16;
 
-function MasterClock(eventBus) {
+function MasterClock(eventBus, audioContext) {
   this._eventBus = eventBus;
+  this._audioContext = audioContext;
 
-  this._ticks = {};
+  this._tempo = MASTER_TEMPO;
   this._isPlaying = false;
+
+  this._activeTick = 0;
+
+  this._nextNoteTime = 0.0;
+  this._currentNote = 0.0;
+  this._scheduleAheadTime = 0.1; // seconds
 
 
   eventBus.on('import.done', function() {
-    this.resetTicks();
-
-    console.log(this._ticks);
+    this.init();
   }, this);
 }
 
 module.exports = MasterClock;
 
-MasterClock.$inject = [ 'eventBus' ];
+MasterClock.$inject = [ 'eventBus', 'audioContext' ];
 
-MasterClock.prototype.resetTicks = function() {
-  var steps = STEPS_NUM,
-      i = 0;
-
-  for (i; i < steps; i++) {
-    this._ticks[i] = [];
-  }
-};
 
 MasterClock.prototype.init = function() {
+  var self = this,
+      eventBus = this._eventBus;
+
   var worker = this.worker = new Worker("lib/worker.js");
 
   worker.onmessage = function(e) {
 
     // run scheduler
     if (e.data === 'tick') {
-        scheduler();
+      self.scheduler();
     }
   };
 
-  this.resetTicks();
+  worker.postMessage('start');
+
+  eventBus.fire('master-clock.start', { numSteps: NUM_STEPS });
+};
+
+MasterClock.prototype.scheduler = function() {
+  var audioContext = this._audioContext,
+      eventBus = this._eventBus;
+
+  // look ahead
+  while (this._nextNoteTime < audioContext.currentTime + this._scheduleAheadTime ) {
+
+    // schedule notes if any are registered for the current 16th note
+    eventBus.fire('master-clock.tick', {
+      tick: this._currentNote,
+      nextNoteTime: this._nextNoteTime
+    });
+
+    this.nextNote();
+  }
+};
+
+MasterClock.prototype.nextNote = function() {
+  var secondsPerBeat = 60.0 / this._tempo; // change tempo to change tempo
+
+  this._nextNoteTime += secondsPerBeat / 4;
+
+  this._currentNote++;
+
+  if (this._currentNote === NUM_STEPS) {
+    this._currentNote = 0;
+  }
 };
