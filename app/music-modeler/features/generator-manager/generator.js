@@ -62,6 +62,11 @@ Generator.prototype.loopSteps = function(divider, fn) {
   }
 };
 
+
+Generator.prototype.getStep = function(stepNumber) {
+  return this._steps[stepNumber];
+};
+
 /**
  * Updates the subdivision by moving sounds accordingly to their new steps depending
  * if the subdivision was increased or decreased.
@@ -146,6 +151,8 @@ Generator.prototype.registerSound = function(shape) {
   var stepNumber = this.calculateStepNumber(shape);
 
   this._insertSound(stepNumber, sound);
+
+  return this.getSchedule();
 };
 
 Generator.prototype.update = function(shape) {
@@ -199,6 +206,7 @@ Generator.prototype.removeSound = function(stepIndex, sound) {
   }
 };
 
+// todo: figure out if it actually can be optimized with changed
 Generator.prototype.getSchedule = function() {
   var sounds = {},
       steps = this._steps,

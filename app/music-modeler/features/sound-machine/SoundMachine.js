@@ -1,6 +1,7 @@
 'use strict';
 
-var pick = require('lodash/object/pick');
+var pick = require('lodash/object/pick'),
+    forEach = require('lodash/collection/forEach');
 
 var Synthesizer = require('../synthesizer/Synthesizer'),
     Sampler = require('../sampler/Sampler');
@@ -52,7 +53,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   };
 
-  this._presets['synthesizerBell'] = synthesizerBell;
+  this._presets.synthesizerBell = synthesizerBell;
 
   // lead synthesizer
   var synthesizerSquareLead = {
@@ -84,7 +85,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   };
 
-  this._presets['synthesizerSquarelead'] = synthesizerSquareLead;
+  this._presets.synthesizerSquarelead = synthesizerSquareLead;
 
   // 808 kick
   var samplerKick = {
@@ -94,9 +95,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/kick.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerKick'] = samplerKick;
+  this._presets.samplerKick = samplerKick;
 
   // 808 clap
   var samplerClap = {
@@ -106,9 +107,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/clap.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerClap'] = samplerClap;
+  this._presets.samplerClap = samplerClap;
 
   // 808 clave
   var samplerClave = {
@@ -118,9 +119,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/clave.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerClave'] = samplerClave;
+  this._presets.samplerClave = samplerClave;
 
   // 808 closed hat
   var samplerClosedHat = {
@@ -130,9 +131,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/closedhat.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerClosedHat'] = samplerClosedHat;
+  this._presets.samplerClosedHat = samplerClosedHat;
 
   // 808 cowbell
   var samplerCowbell = {
@@ -142,9 +143,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/cowbell.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerCowbell'] = samplerCowbell;
+  this._presets.samplerCowbell = samplerCowbell;
 
   // 808 crash
   var samplerCrash = {
@@ -154,9 +155,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/crash.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerCrash'] = samplerCrash;
+  this._presets.samplerCrash = samplerCrash;
 
   // 808 open hat
   var samplerOpenHat = {
@@ -166,9 +167,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/openhat.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerOpenHat'] = samplerOpenHat;
+  this._presets.samplerOpenHat = samplerOpenHat;
 
   // 808 rim
   var samplerRim = {
@@ -178,9 +179,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/rim.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerRim'] = samplerRim;
+  this._presets.samplerRim = samplerRim;
 
   // 808 snare
   var samplerSnare = {
@@ -190,9 +191,9 @@ SoundMachine.prototype.initDefaults = function() {
       url: 'samples/snare.wav',
       rootKey: 'c3'
     })
-  }
+  };
 
-  this._presets['samplerSnare'] = samplerSnare;
+  this._presets.samplerSnare = samplerSnare;
 
 };
 
@@ -202,14 +203,13 @@ SoundMachine.prototype.playSoundAt = function(sound, time) {
   }
 
   this._presets[sound.preset].preset.playNoteAt(sound.note, time);
-}
+};
 
-SoundMachine.prototype.playSoundsAt = function(sounds, time) {
-  var that = this;
+SoundMachine.prototype.playPatches = function(sounds, time) {
 
-  sounds.forEach(function(sound) {
-    that.playSoundAt(sound, time);
-  });
+  forEach(sounds, function(sound) {
+    this.playSoundAt(sound, time);
+  }, this);
 };
 
 SoundMachine.prototype.addSound = function(name, sound) {
@@ -226,14 +226,14 @@ SoundMachine.prototype.removeSound = function(name) {
   }
 
   delete this._presets[name];
-}
+};
 
 SoundMachine.prototype.getAll = function() {
   return this._presets;
-}
+};
 
 SoundMachine.prototype.getSounds = function(type) {
   return pick(this._presets, function(preset) {
     return preset.type === type;
   });
-}
+};
