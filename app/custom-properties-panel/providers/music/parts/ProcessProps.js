@@ -17,7 +17,6 @@ function getHTML(id, label) {
 function change(element, node, event) {
   var input = domQuery('input', node);
 
-  //console.log(domAttr(node, 'data-entry'));
   var operator = event.delegateTarget.innerHTML;
 
   if (input.value !== '') {
@@ -50,7 +49,6 @@ module.exports = function(group, element) {
     });
 
     tempoTextField.change = change;
-
     tempoTextField.html = getHTML('tempo', 'Tempo');
 
     group.entries.push(tempoTextField);
@@ -63,7 +61,6 @@ module.exports = function(group, element) {
     });
 
     volumeTextField.change = change;
-
     volumeTextField.html = getHTML('volume', 'Volume');
 
     group.entries.push(volumeTextField);
