@@ -23,19 +23,19 @@ function Synthesizer(audioContext, output, config) {
 
 module.exports = Synthesizer;
 
-Synthesizer.prototype.playFrequencyAt = function(frequency, time) {
+Synthesizer.prototype.playFrequencyAt = function(frequency, time, tempo) {
 
-  var synthesizerVoice = new SynthesizerVoice(this._audioContext, this._config, frequency);
+  var synthesizerVoice = new SynthesizerVoice(this._audioContext, this._config, frequency, tempo);
 
   synthesizerVoice.connect(this._output);
   synthesizerVoice.playAt(time);
 
 };
 
-Synthesizer.prototype.playNoteAt = function(note, time) {
+Synthesizer.prototype.playNoteAt = function(note, time, tempo) {
 
   var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
 
-  this.playFrequencyAt(frequency, time);
+  this.playFrequencyAt(frequency, time, tempo);
 
 };

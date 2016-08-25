@@ -1,11 +1,16 @@
 'use strict';
 
-function Delay(audioContext, config) {
+function Delay(audioContext, config, tempo) {
   this.audioContext = audioContext;
   var config = config || { delayTime: 0.3, feedback: 0.5 };
+  this.tempo = tempo || 120.0;
 
   this.delay = this.audioContext.createDelay();
-  this.delay.delayTime.value = config.delayTime || 0.3;
+
+  var delayTime = config.delayTime || 4;
+  delayTime = (15 / this.tempo) * delayTime;
+
+  this.delay.delayTime.value = delayTime;
 
   this.feedback = audioContext.createGain();
   this.feedback.gain.value = config.feedback || 0.5;

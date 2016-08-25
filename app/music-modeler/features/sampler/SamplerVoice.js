@@ -5,7 +5,7 @@ var BufferSource = require('../audio-nodes/BufferSource'),
     Delay = require('../audio-nodes/Delay'),
     Reverb = require('../audio-nodes/Reverb');
 
-function SamplerVoice(audioContext, bufferConfig, config) {
+function SamplerVoice(audioContext, bufferConfig, config, tempo) {
   this.audioContext = audioContext;
 
   if (!config) {
@@ -29,7 +29,7 @@ function SamplerVoice(audioContext, bufferConfig, config) {
 
   // optional delay
   if (config.delay) {
-    var delay = new Delay(this.audioContext, config.delay);
+    var delay = new Delay(this.audioContext, config.delay, tempo);
 
     this.lastNode.connect(delay);
 

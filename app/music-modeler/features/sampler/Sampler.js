@@ -32,7 +32,7 @@ function Sampler(audioContext, output, config) {
 
 module.exports = Sampler;
 
-Sampler.prototype.playFrequencyAt = function(frequency, time) {
+Sampler.prototype.playFrequencyAt = function(frequency, time, tempo) {
 
   var rootKey = this._config.rootKey || 'c3';
   var rootKeyFrequency = parser.parse(rootKey).freq;
@@ -41,14 +41,14 @@ Sampler.prototype.playFrequencyAt = function(frequency, time) {
   var samplerVoice = new SamplerVoice(this._audioContext, {
     buffer: this._sampleBuffer,
     pitch: pitch
-  }, this._config);
+  }, this._config, tempo);
 
   samplerVoice.connect(this._output);
   samplerVoice.playAt(time);
 
 };
 
-Sampler.prototype.playNoteAt = function(note, time) {
+Sampler.prototype.playNoteAt = function(note, time, tempo) {
   if (!this._sampleBuffer) {
 
     // sample not loaded
@@ -57,6 +57,6 @@ Sampler.prototype.playNoteAt = function(note, time) {
 
   var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
 
-  this.playFrequencyAt(frequency, time);
+  this.playFrequencyAt(frequency, time, tempo);
 
 };

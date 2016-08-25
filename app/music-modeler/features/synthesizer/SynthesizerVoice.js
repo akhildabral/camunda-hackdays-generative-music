@@ -7,7 +7,7 @@ var Oscillator = require('../audio-nodes/Oscillator'),
     Delay = require('../audio-nodes/Delay'),
     Reverb = require('../audio-nodes/Reverb');
 
-function SynthesizerVoice (audioContext, config, frequency) {
+function SynthesizerVoice (audioContext, config, frequency, tempo) {
   this.audioContext = audioContext;
 
   if (!config) {
@@ -47,7 +47,7 @@ function SynthesizerVoice (audioContext, config, frequency) {
 
   // optional delay
   if (config.delay) {
-    var delay = new Delay(this.audioContext, config.delay);
+    var delay = new Delay(this.audioContext, config.delay, tempo);
 
     this.lastNode.connect(delay);
 

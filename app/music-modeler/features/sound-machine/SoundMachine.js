@@ -43,7 +43,7 @@ SoundMachine.prototype.initDefaults = function() {
         frequency: '2000'
       },
       delay: {
-        delayTime: 0.5, // TODO take current tempo into account
+        delayTime: 4,
         feedback: 0.5
       }
     })
@@ -70,7 +70,7 @@ SoundMachine.prototype.initDefaults = function() {
         frequency: '10000'
       },
       delay: {
-        delayTime: 0.2,
+        delayTime: 4,
         feedback: 0.5
       }
     })
@@ -180,7 +180,11 @@ SoundMachine.prototype.initDefaults = function() {
     type: 'drums',
     preset: new Sampler(this._audioContext, this._compressor, {
       url: 'samples/snare.wav',
-      rootKey: 'c3'
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.2
+      }
     })
   };
 
@@ -193,7 +197,7 @@ SoundMachine.prototype.playSoundAt = function(sound, time) {
     throw new Error('preset not found');
   }
 
-  this._presets[sound.preset].preset.playNoteAt(sound.note, time);
+  this._presets[sound.preset].preset.playNoteAt(sound.note, time, this._masterClock._tempo);
 };
 
 SoundMachine.prototype.playPatches = function(sounds, time) {
