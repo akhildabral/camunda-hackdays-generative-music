@@ -55,6 +55,11 @@ Generator.prototype.init = function(numSteps, subDivision) {
 Generator.prototype.loopSteps = function(divider, fn) {
   var result;
 
+  if (typeof divider === 'function') {
+    fn = divider;
+    divider = this.calcDivider();
+  }
+
   for (var idx = 0; idx < this._numSteps; idx++) {
     if (idx % divider === 0) {
       result = fn.call(this, this._steps[idx], idx);
@@ -71,6 +76,10 @@ Generator.prototype.getStep = function(stepNumber) {
   return this._steps[stepNumber];
 };
 
+Generator.prototype.calcDivider = function() {
+  return this._numSteps / this._subDivision;
+};
+
 /**
  * Updates the subdivision by moving sounds accordingly to their new steps depending
  * if the subdivision was increased or decreased.
@@ -81,7 +90,7 @@ Generator.prototype.getStep = function(stepNumber) {
  */
 Generator.prototype.updateSubDivision = function(newSubDivision) {
   var divider = this._numSteps / newSubDivision,
-      oldDivider = this._numSteps / this._subDivision,
+      oldDivider = this.calcDivider(),
       isSmaller = newSubDivision > this._subDivision,
       newSteps = {
         changed: []
@@ -97,7 +106,7 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
 
   // from 1/4 to 1/8 - no need to move sounds around
   if (isSmaller) {
-    this.loopSteps(divider, function(step, index) {
+    this.loopSteps(function(step, index) {
       if (!step) {
         this._steps[index] = [];
       }
@@ -106,7 +115,7 @@ Generator.prototype.updateSubDivision = function(newSubDivision) {
     return this._steps;
   }
 
-  this.loopSteps(divider, function(step, index) {
+  this.loopSteps(function(step, index) {
     newSteps[index] = [];
   });
 
@@ -159,7 +168,7 @@ Generator.prototype.registerElement = function(stepNumber, element) {
   return this.getSchedule();
 };
 
-Generator.prototype.update = function(stepNumber, element) {
+Generator.prototype.updateElement = function(stepNumber, element) {
   this.moveSound(stepNumber, element);
 
   return this.getSchedule();
@@ -202,7 +211,7 @@ Generator.prototype.removeSound = function(stepIndex, element) {
     currSound = find(step, element);
     currIndex = step.indexOf(currSound);
 
-    step.splice(currIndex, 1, element);
+    step.splice(currIndex, 1);
   }
 };
 

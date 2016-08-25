@@ -105,23 +105,27 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
     }
   }, this);
 
-  eventBus.on('generator.connect', function(context) {
-    var shape = context.shape;
+  eventBus.on('shape.move.end', function(context) {
+    var shape = context.shape,
+        generators;
 
-    // triggered on automatic connection of generator with musical event
+    if (isMusicalEvent(shape)) {
 
-  }, this);
+      generators = executor.getAllGenerators();
 
-  eventBus.on('move.end', function(context) {
-    var shape = context.shape;
+      // check distance for all generators
+      forEach(generators, function(generator) {
+        var generatorShape = elementRegistry.get(generator.id);
 
-    var generator = this.findGenerator(shape);
+        if (getDistance(shape, generatorShape) <= MAX_DIST) {
 
-    if (!generator) {
-      return;
+          var stepNumber = generator.calculateStepNumber(shape, generatorShape);
+
+          // register sound on generator
+          generator.updateElement(stepNumber, shape);
+        }
+      }, this);
     }
-
-    generator.update(shape);
   }, this);
 
   eventBus.on('elements.changed', function(context) {
