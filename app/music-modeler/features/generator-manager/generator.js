@@ -1,6 +1,7 @@
 'use strict';
 
-var find = require('lodash/collection/find');
+var find = require('lodash/collection/find'),
+    findIndex = require('lodash/array/findIndex');
 
 var getDistance = require('diagram-js/lib/util/Geometry').pointDistance;
 
@@ -185,7 +186,13 @@ Generator.prototype.updateElement = function(stepNumber, element) {
  * @return {[type]}                [description]
  */
 Generator.prototype.moveSound = function(newStepNumber, element) {
-  var removeIdx;
+  this.removeElement(element);
+
+  this._insertSound(newStepNumber, element);
+};
+
+Generator.prototype.removeElement = function(element) {
+  var step, currIndex, removeIdx;
 
   this.loopSteps(function(step, stepIndex) {
     if (find(step, element)) {
@@ -196,22 +203,13 @@ Generator.prototype.moveSound = function(newStepNumber, element) {
   });
 
   if (typeof removeIdx === 'number') {
-    this.removeSound(removeIdx, element);
-  }
+    step = this._steps[removeIdx];
 
-  this._insertSound(newStepNumber, element);
-};
+    if (step) {
+      currIndex = findIndex(step, element);
 
-Generator.prototype.removeSound = function(stepIndex, element) {
-  var step = this._steps[stepIndex],
-      currSound,
-      currIndex;
-
-  if (step) {
-    currSound = find(step, element);
-    currIndex = step.indexOf(currSound);
-
-    step.splice(currIndex, 1);
+      step.splice(currIndex, 1);
+    }
   }
 };
 

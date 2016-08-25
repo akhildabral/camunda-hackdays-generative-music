@@ -39,8 +39,7 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
   }, this);
 
   eventBus.on('create.end', function(context) {
-    var shape = context.shape,
-        generators;
+    var shape = context.shape;
 
     if (is(shape, 'bpmn:StartEvent')) {
       var generator = this.createNewGenerator(shape);
@@ -66,23 +65,12 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
 
     // if musical event
     if (isMusicalEvent(shape)) {
+      this.inGeneratorRange(shape, function(generator, generatorShape, stepNumber) {
+        // register sound on generator
+        generator.registerElement(stepNumber, shape);
 
-      generators = executor.getAllGenerators();
-
-      // check distance for all generators
-      forEach(generators, function(generator) {
-        var generatorShape = elementRegistry.get(generator.id);
-
-        if (getDistance(shape, generatorShape) <= MAX_DIST) {
-
-          var stepNumber = generator.calculateStepNumber(shape, generatorShape);
-
-          // register sound on generator
-          generator.registerElement(stepNumber, shape);
-
-          modeling.connect(generatorShape, shape);
-        }
-      }, this);
+        modeling.connect(generatorShape, shape);
+      });
     }
   }, this);
 
@@ -102,32 +90,47 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
         if (stepNumber) {
           generator.removeSound(stepNumber, element);
         }
-
       });
 
     }
   }, this);
 
   eventBus.on('shape.move.end', function(context) {
-    var shape = context.shape,
-        generators;
+    var shape = context.shape;
 
     if (isMusicalEvent(shape)) {
 
-      generators = executor.getAllGenerators();
+      this.inGeneratorRange(shape, function(generator, generatorShape, stepNumber) {
+        var hasConnection = false;
 
-      // check distance for all generators
-      forEach(generators, function(generator) {
-        var generatorShape = elementRegistry.get(generator.id);
+        if (!stepNumber) {
+          forEach(generatorShape.outgoing, function(connection) {
+            if (shape.incoming.indexOf(connection) !== -1) {
+              modeling.removeConnection(connection);
 
-        if (getDistance(shape, generatorShape) <= MAX_DIST) {
+              return false;
+            }
+          });
 
-          var stepNumber = generator.calculateStepNumber(shape, generatorShape);
+          generator.removeElement(shape);
 
+        } else {
           // register sound on generator
           generator.updateElement(stepNumber, shape);
+
+          forEach(generatorShape.outgoing, function(connection) {
+            if (shape.incoming.indexOf(connection) !== -1) {
+              hasConnection = true;
+
+              return false;
+            }
+          });
+
+          if (!hasConnection) {
+            modeling.connect(generatorShape, shape);
+          }
         }
-      }, this);
+      });
     }
   }, this);
 
@@ -157,6 +160,26 @@ module.exports = GeneratorManager;
 
 GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry', 'modeling' ];
 
+
+GeneratorManager.prototype.inGeneratorRange = function(shape, fn) {
+  var elementRegistry = this._elementRegistry,
+      executor = this._executor;
+
+  var generators = executor.getAllGenerators();
+
+  forEach(generators, function(generator) {
+    var generatorShape = elementRegistry.get(generator.id);
+
+    if (getDistance(shape, generatorShape) <= MAX_DIST) {
+
+      var stepNumber = generator.calculateStepNumber(shape, generatorShape);
+
+      fn(generator, generatorShape, stepNumber);
+    } else {
+      fn(generator, generatorShape, null);
+    }
+  }, this);
+};
 
 GeneratorManager.prototype.findGenerator = function(shape) {
   var executor = this._executor;
