@@ -2,6 +2,15 @@
 
 var Synthesizer = require('./Synthesizer');
 
+/**
+ * A service that plays synthesizer sounds.
+ *
+ * Usage:
+ * this.playSoundsAt([
+ *  { preset: 'simple', note: 'c#4' },
+ *  { preset: 'simple', note: 'd4' }
+ * ], 1);
+ */
 function SynthesizerService(audioContext, eventBus) {
   this._audioContext = audioContext;
 
@@ -11,13 +20,6 @@ function SynthesizerService(audioContext, eventBus) {
   this._synthesizers = {};
 
   this.initDefaults();
-
-  /*
-  this.startSoundsAt([
-    { preset: 'simple', frequency: 440.0 }
-    { preset: 'simple', frequency: 880.0 }
-  ], 1)
-  */
 }
 
 module.exports = SynthesizerService;
@@ -67,10 +69,10 @@ SynthesizerService.prototype.getSynthesizers = function() {
   return this._synthesizers;
 }
 
-SynthesizerService.prototype.startSoundsAt = function(sounds, time) {
+SynthesizerService.prototype.playSoundsAt = function(sounds, time) {
   var that = this;
 
   sounds.forEach(function(sound) {
-    that._synthesizers[sound.preset].startFrequencyAt(sound.frequency, time);
+    that._synthesizers[sound.preset].playNoteAt(sound.note, time);
   });
 }

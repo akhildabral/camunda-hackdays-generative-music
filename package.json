@@ -49,6 +49,7 @@
     "bpmn-js-properties-panel": "^0.8.2",
     "diagram-js": "^0.15.0",
     "inherits": "^2.0.1",
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "note-parser": "^2.0.0"
   }
 }

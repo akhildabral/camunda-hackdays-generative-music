@@ -1,5 +1,7 @@
 'use strict';
 
+var parser = require('note-parser')
+
 var Voice = require('./Voice');
 
 function Synthesizer(audioContext, output, config) {
@@ -19,13 +21,21 @@ function Synthesizer(audioContext, output, config) {
 
 }
 
-Synthesizer.prototype.startFrequencyAt = function(frequency, time) {
+Synthesizer.prototype.playFrequencyAt = function(frequency, time) {
 
   var voice = new Voice(this.audioContext, this.config, frequency);
 
   voice.connect(this.output);
   voice.startAt(time);
 
-}
+};
+
+Synthesizer.prototype.playNoteAt = function(note, time) {
+
+  var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
+
+  this.playFrequencyAt(frequency, time);
+
+};
 
 module.exports = Synthesizer;
