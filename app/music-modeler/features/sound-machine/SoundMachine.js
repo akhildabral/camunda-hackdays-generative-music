@@ -22,6 +22,7 @@ module.exports = SoundMachine;
 
 SoundMachine.prototype.initDefaults = function() {
 
+  // bell synthesizer
   var synthesizerBell = {
     label: 'Bell',
     type: 'instrument',
@@ -51,8 +52,39 @@ SoundMachine.prototype.initDefaults = function() {
     })
   };
 
-  this._presets['synthesizer:bell'] = synthesizerBell;
+  this._presets['synthesizerBell'] = synthesizerBell;
 
+  // lead synthesizer
+  var synthesizerSquareLead = {
+    label: 'Square Lead',
+    type: 'instrument',
+    preset: new Synthesizer(this._audioContext, this._compressor, {
+      oscillator: {
+        type: 'square'
+      },
+      envelope: {
+        attack: 0.1,
+        release: 0.1,
+        amplitude: 0.3
+      },
+      filter: {
+        type: 'lowpass',
+        q: '6',
+        frequency: '10000'
+      },
+      delay: {
+        delayTime: 0.2,
+        feedback: 0.5
+      },
+      reverb: {
+        duration: 0.1,
+        decay: 1.0,
+        reverse: false
+      }
+    })
+  };
+
+  this._presets['synthesizerSquarelead'] = synthesizerSquareLead;
 
   // 808 kick
   var samplerKick = {
@@ -64,7 +96,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:kick'] = samplerKick;
+  this._presets['samplerKick'] = samplerKick;
 
   // 808 clap
   var samplerClap = {
@@ -76,7 +108,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:clap'] = samplerClap;
+  this._presets['samplerClap'] = samplerClap;
 
   // 808 clave
   var samplerClave = {
@@ -88,7 +120,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:clave'] = samplerClave;
+  this._presets['samplerClave'] = samplerClave;
 
   // 808 closed hat
   var samplerClosedHat = {
@@ -100,7 +132,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:closedhat'] = samplerClosedHat;
+  this._presets['samplerClosedHat'] = samplerClosedHat;
 
   // 808 cowbell
   var samplerCowbell = {
@@ -112,7 +144,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:cowbell'] = samplerCowbell;
+  this._presets['samplerCowbell'] = samplerCowbell;
 
   // 808 crash
   var samplerCrash = {
@@ -124,7 +156,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:crash'] = samplerCrash;
+  this._presets['samplerCrash'] = samplerCrash;
 
   // 808 open hat
   var samplerOpenHat = {
@@ -136,7 +168,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:openhat'] = samplerOpenHat;
+  this._presets['samplerOpenHat'] = samplerOpenHat;
 
   // 808 rim
   var samplerRim = {
@@ -148,7 +180,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:rim'] = samplerRim;
+  this._presets['samplerRim'] = samplerRim;
 
   // 808 snare
   var samplerSnare = {
@@ -160,7 +192,7 @@ SoundMachine.prototype.initDefaults = function() {
     })
   }
 
-  this._presets['sampler:snare'] = samplerSnare;
+  this._presets['samplerSnare'] = samplerSnare;
 
 };
 

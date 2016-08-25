@@ -25,26 +25,43 @@ function SynthesizerVoice (audioContext, config, frequency) {
   this.gain = new Gain(this.audioContext);
 
   // envelope generator
-  this.envelope = new EnvelopeGenerator(this.audioContext, config.envelope);
+  if (config.envelope) {
+    this.envelope = new EnvelopeGenerator(this.audioContext, config.envelope);
+  } else {
+    this.envelope = new EnvelopeGenerator(this.audioContext, { attack: 0.0, release: 0.1 });
+  }
 
-  // filter
-  this.filter = new Filter(this.audioContext, config.envelope);
-
-  // delay
-  this.delay = new Delay(this.audioContext, config.delay);
-
-  // reverb
-  this.reverb = new Reverb(this.audioContext, config.reverb);
-
-  // wiring up stuff
   this.oscillator.connect(this.gain);
   this.envelope.connect(this.gain.amplitude);
-  this.gain.connect(this.filter);
-  this.filter.connect(this.delay);
-  this.delay.connect(this.reverb);
 
-  // configure output
-  this.output = this.reverb;
+  this.lastNode = this.output = this.gain;
+
+  // optional filter
+  if (config.filter) {
+    var filter = new Filter(this.audioContext, config.filter);
+
+    this.lastNode.connect(filter);
+
+    this.lastNode = this.output = filter;
+  }
+
+  // optional delay
+  if (config.delay) {
+    var delay = new Delay(this.audioContext, config.delay);
+
+    this.lastNode.connect(delay);
+
+    this.lastNode = this.output = delay;
+  }
+
+  // optional reverb
+  if (config.reverb) {
+    var reverb = new Reverb(this.audioContext, config.reverb);
+
+    this.lastNode.connect(reverb);
+
+    this.lastNode = this.output = reverb;
+  }
 
 }
 
