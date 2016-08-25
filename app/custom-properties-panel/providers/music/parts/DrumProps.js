@@ -49,7 +49,7 @@ module.exports = function(group, element) {
       '<div type="sharp" id="gsharp3"></div>' +
       '<div type="flat" id="a3"></div>' +
       '<div type="sharp" id="asharp3"></div>' +
-      '<div type="flat" id="h3"></div>' +
+      '<div type="flat" id="b3"></div>' +
       '<div type="flat" id="c4"></div>' +
       '<div type="sharp" id="csharp4"></div>' +
       '<div type="flat" id="d4"></div>' +
