@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  __init__: [ 'generators' ],
+  __init__: [ 'generatorManager' ],
   generatorManager: [ 'type', require('./generator-manager') ]
 };
