@@ -2,13 +2,27 @@
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 
-var domQuery = require('min-dom/lib/query');
+var domQuery = require('min-dom/lib/query'),
+    domAttr = require('min-dom/lib/attr');
 
-var domAttr = require('min-dom/lib/attr');
+var entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory');
 
 module.exports = function(group, element) {
 
   if (is(element, 'bpmn:EndEvent')) {
+
+    group.entries.push(entryFactory.selectBox({
+      id : 'preset',
+      description : 'Select a preset',
+      label : 'Preset',
+      modelProperty : 'preset',
+      selectOptions: [
+        { name: 'Bli', value: 'bli' },
+        { name: 'Bla', value: 'bla' },
+        { name: 'Blub', value: 'blub' },
+      ]
+    }));
+
 
     var id = 'music-note',
         label = 'music-note';
