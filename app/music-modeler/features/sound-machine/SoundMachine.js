@@ -47,10 +47,6 @@ SoundMachine.prototype.initDefaults = function() {
         type: 'lowpass',
         q: '6',
         frequency: '2000'
-      },
-      delay: {
-        delayTime: 4,
-        feedback: 0.5
       }
     })
   };

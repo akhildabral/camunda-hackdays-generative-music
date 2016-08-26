@@ -9,19 +9,16 @@ function BufferSource(audioContext, config) {
 
   this.source = this.audioContext.createBufferSource();
   this.source.buffer = config.buffer;
-  console.log('setting playback rate to ' + config.pitch);
+
   this.source.playbackRate.value = config.pitch;
 
   // configure output
   this.output = this.source;
-
 }
 
 BufferSource.prototype.playAt = function(time) {
-
   this.source.start(time);
-
-}
+};
 
 BufferSource.prototype.connect = function(node) {
 
@@ -29,8 +26,7 @@ BufferSource.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
-}
+  }
+};
 
 module.exports = BufferSource;

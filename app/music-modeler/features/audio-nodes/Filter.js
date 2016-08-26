@@ -2,7 +2,8 @@
 
 function Filter(audioContext, config) {
   this.audioContext = audioContext;
-  var config = config || { type: 'lowpass', q: 6, frequency: '2000.0' };
+
+  config = config || { type: 'lowpass', q: 6, frequency: '2000.0' };
 
   this.filter = this.audioContext.createBiquadFilter();
 
@@ -13,7 +14,6 @@ function Filter(audioContext, config) {
   // configure input und output
   this.input = this.filter;
   this.output = this.filter;
-
 }
 
 Filter.prototype.connect = function(node) {
@@ -22,8 +22,7 @@ Filter.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
-}
+  }
+};
 
 module.exports = Filter;

@@ -2,8 +2,9 @@
 
 function Delay(audioContext, config, tempo) {
   this.audioContext = audioContext;
-  var config = config || { delayTime: 0.3, feedback: 0.5 };
   this.tempo = tempo || 120.0;
+
+  config = config || { delayTime: 0.3, feedback: 0.5 };
 
   this.delay = this.audioContext.createDelay();
 
@@ -21,7 +22,6 @@ function Delay(audioContext, config, tempo) {
   // configure input and output
   this.input = this.delay;
   this.output = this.delay;
-
 }
 
 Delay.prototype.connect = function(node) {
@@ -30,8 +30,7 @@ Delay.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
-}
+  }
+};
 
 module.exports = Delay;

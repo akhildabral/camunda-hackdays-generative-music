@@ -14,7 +14,7 @@ var getDistance = require('diagram-js/lib/util/Geometry').pointDistance,
 
 var DEFAULT_DIVISION = 16; // just need divider coz: 1 / n
 
-var MAX_DIST = 600;
+var MAX_DIST = 800;
 
 /**
  * @example
@@ -31,6 +31,7 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
   this._eventBus = eventBus;
   this._executor = executor;
   this._elementRegistry = elementRegistry;
+  this._modeling = modeling;
 
   eventBus.on('master-clock.start', function(context) {
     var numSteps = context.numSteps;
@@ -100,40 +101,22 @@ function GeneratorManager(eventBus, executor, elementRegistry, modeling) {
   }, this);
 
   eventBus.on('shape.move.end', function(context) {
-    var shape = context.shape;
+    var shape = context.shape,
+        generator,
+        generatorShape;
 
     if (isMusicalEvent(shape)) {
 
       this.inGeneratorRange(shape, function(generator, generatorShape, stepNumber) {
-        var hasConnection = false;
+        this.connect(generator, generatorShape, shape, stepNumber);
+      });
+    } else {
+      // generator moved
+      generatorShape = shape;
+      generator = executor.getGenerator(generatorShape.id);
 
-        if (!stepNumber) {
-          forEach(generatorShape.outgoing, function(connection) {
-            if (shape.incoming.indexOf(connection) !== -1) {
-              modeling.removeConnection(connection);
-
-              return false;
-            }
-          });
-
-          generator.removeElement(shape);
-
-        } else {
-          // register sound on generator
-          generator.updateElement(stepNumber, shape);
-
-          forEach(generatorShape.outgoing, function(connection) {
-            if (shape.incoming.indexOf(connection) !== -1) {
-              hasConnection = true;
-
-              return false;
-            }
-          });
-
-          if (!hasConnection) {
-            modeling.connect(generatorShape, shape);
-          }
-        }
+      this.inElementRange(generator, generatorShape, function(shape, stepNumber) {
+        this.connect(generator, generatorShape, shape, stepNumber);
       });
     }
   }, this);
@@ -164,8 +147,66 @@ module.exports = GeneratorManager;
 
 GeneratorManager.$inject = [ 'eventBus', 'executor', 'elementRegistry', 'modeling' ];
 
+GeneratorManager.prototype.connect = function (generator, generatorShape, shape, stepNumber) {
+  var modeling = this._modeling;
 
-GeneratorManager.prototype.inGeneratorRange = function(shape, fn) {
+  var hasConnection = false,
+      connection;
+
+  if (!stepNumber) {
+    forEach(generatorShape.outgoing, function(conn) {
+      if (shape.incoming.indexOf(conn) !== -1) {
+        connection = conn;
+
+        return false;
+      }
+    });
+
+    if (connection) {
+      modeling.removeConnection(connection);
+
+      generator.removeElement(shape);
+    }
+
+  } else {
+    // register sound on generator
+    generator.updateElement(stepNumber, shape);
+
+    forEach(generatorShape.outgoing, function(connection) {
+      if (shape.incoming.indexOf(connection) !== -1) {
+        hasConnection = true;
+
+        return false;
+      }
+    });
+
+    if (!hasConnection) {
+      modeling.connect(generatorShape, shape);
+    }
+  }
+};
+
+GeneratorManager.prototype.inElementRange = function(generator, generatorShape, fn) {
+  var elementRegistry = this._elementRegistry;
+
+  var elements = elementRegistry.filter(function(element) {
+    return is(element, 'bpmn:Task') || is(element, 'bpmn:EndEvent');
+  });
+
+  forEach(elements, function(element) {
+
+    if (getDistance(element, generatorShape) <= MAX_DIST) {
+
+      var stepNumber = generator.calculateStepNumber(element, generatorShape);
+
+      fn.call(this, element, stepNumber);
+    } else {
+      fn.call(this, element, null);
+    }
+  }, this);
+};
+
+GeneratorManager.prototype.inGeneratorRange = function(element, fn) {
   var elementRegistry = this._elementRegistry,
       executor = this._executor;
 
@@ -174,13 +215,13 @@ GeneratorManager.prototype.inGeneratorRange = function(shape, fn) {
   forEach(generators, function(generator) {
     var generatorShape = elementRegistry.get(generator.id);
 
-    if (getDistance(shape, generatorShape) <= MAX_DIST) {
+    if (getDistance(element, generatorShape) <= MAX_DIST) {
 
-      var stepNumber = generator.calculateStepNumber(shape, generatorShape);
+      var stepNumber = generator.calculateStepNumber(element, generatorShape);
 
-      fn(generator, generatorShape, stepNumber);
+      fn.call(this, generator, generatorShape, stepNumber);
     } else {
-      fn(generator, generatorShape, null);
+      fn.call(this, generator, generatorShape, null);
     }
   }, this);
 };

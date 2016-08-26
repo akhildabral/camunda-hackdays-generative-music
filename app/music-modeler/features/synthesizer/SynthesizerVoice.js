@@ -73,12 +73,10 @@ SynthesizerVoice.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
+  }
 };
 
 SynthesizerVoice.prototype.playAt = function(time) {
 
   this.envelope.triggerAt(time);
-
 };

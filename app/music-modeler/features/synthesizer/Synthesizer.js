@@ -9,11 +9,13 @@ var Reverb = require('../audio-nodes/Reverb');
 function Synthesizer(audioContext, output, config) {
 
   this._audioContext = audioContext;
+
   this._reverb = new Reverb(this._audioContext, {
     duration: 1,
     decay: 0.5,
     reverse: false
   });
+
   this._output = output;
 
   this._gain = this._audioContext.createGain();
@@ -31,7 +33,6 @@ function Synthesizer(audioContext, output, config) {
   }
 
   this._config = config;
-
 }
 
 module.exports = Synthesizer;
@@ -43,7 +44,6 @@ Synthesizer.prototype.playFrequencyAt = function(frequency, time, tempo) {
   // TODO connect to reverb!
   synthesizerVoice.connect(this._gain);
   synthesizerVoice.playAt(time);
-
 };
 
 Synthesizer.prototype.playNoteAt = function(note, time, tempo) {
@@ -53,5 +53,4 @@ Synthesizer.prototype.playNoteAt = function(note, time, tempo) {
   var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
 
   this.playFrequencyAt(frequency, time, tempo);
-
 };

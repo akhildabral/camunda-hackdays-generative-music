@@ -2,7 +2,8 @@
 
 function Oscillator(audioContext, config, frequency) {
     this.audioContext = audioContext;
-    var config = config || { type: 'sine' };
+
+    config = config || { type: 'sine' };
 
     this.oscillator = this.audioContext.createOscillator();
     this.oscillator.type = config.type;
@@ -12,7 +13,6 @@ function Oscillator(audioContext, config, frequency) {
     // configure input and output
     this.input = this.oscillator;
     this.output = this.oscillator;
-
 }
 
 Oscillator.prototype.connect = function(node) {
@@ -21,8 +21,7 @@ Oscillator.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
-}
+  }
+};
 
 module.exports = Oscillator;

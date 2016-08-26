@@ -75,8 +75,6 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
     return;
   }
 
-  var self = this;
-
   for (idx = 0; idx < elements.length; idx++) {
     var element = elements[idx];
 
@@ -88,6 +86,6 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
   if (!sounds.length) {
     return;
   }
-
+  console.log(JSON.stringify(sounds));
   soundMachine.playPatches(sounds, nextNoteTime);
 };

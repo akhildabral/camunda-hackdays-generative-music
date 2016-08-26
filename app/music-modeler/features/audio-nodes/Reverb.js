@@ -2,7 +2,8 @@
 
 function Reverb(audioContext, config) {
   this.audioContext = audioContext;
-  var config = config || { duration: 5.0, decay: 5.0, reverse: false };
+
+  config = config || { duration: 5.0, decay: 5.0, reverse: false };
 
   this.convolver = audioContext.createConvolver();
   this.convolver.buffer = impulseResponse(
@@ -23,9 +24,8 @@ Reverb.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-
-}
+  }
+};
 
 module.exports = Reverb;
 

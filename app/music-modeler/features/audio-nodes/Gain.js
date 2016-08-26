@@ -11,7 +11,7 @@ function Gain(audioContext) {
   // configure input and output
   this.input = this.gain;
   this.output = this.gain;
-};
+}
 
 Gain.prototype.connect = function(node) {
 
@@ -19,8 +19,7 @@ Gain.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
-  
-}
+  }
+};
 
 module.exports = Gain;

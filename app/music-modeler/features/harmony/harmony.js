@@ -15,9 +15,6 @@ function Harmony(eventBus, elementRegistry) {
   this._scale = 'major';
   this._availableNotes = musicScale(this._scale, this._key);
 
-  eventBus.on('master-clock.start', function() {
-    console.log(this._availableNotes);
-  }, this);
 
   eventBus.on('create.end', function(context) {
     var shape = context.shape;
@@ -50,7 +47,7 @@ Harmony.prototype.setRandomNote = function(shape, keepOctave) {
       availableNotes = this._availableNotes,
       availableLen = availableNotes.length - 1,
       randIndex = Math.round(Math.random() * availableLen),
-      randOctave = Math.round(Math.random() * 4) + 2;
+      randOctave = Math.round(Math.random() * 3) + 2;
 
   if (keepOctave) {
     randOctave = businessObject.note.substr(-1);
@@ -58,6 +55,7 @@ Harmony.prototype.setRandomNote = function(shape, keepOctave) {
 
   businessObject.note = availableNotes[randIndex].toLowerCase() + randOctave;
 
+  console.log(businessObject.note, businessObject.preset);
 };
 
 Harmony.prototype.update = function(businessObject) {
