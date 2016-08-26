@@ -22,6 +22,16 @@
           "name": "volume",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "key",
+          "isAttr": true,
+          "type": "String"
+        },
+        {
+          "name": "scale",
+          "isAttr": true,
+          "type": "String"
         }
       ]
     },
@@ -35,7 +45,7 @@
           "name": "subDivision",
           "isAttr": true,
           "type": "String"
-        },
+        }
       ]
     },
     {
@@ -53,7 +63,7 @@
           "name": "note",
           "isAttr": true,
           "type": "String"
-        },
+        }
       ]
     },
     {
@@ -71,8 +81,8 @@
           "name": "note",
           "isAttr": true,
           "type": "String"
-        },
+        }
       ]
-    },
+    }
   ]
 }

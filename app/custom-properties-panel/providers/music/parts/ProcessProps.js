@@ -64,5 +64,47 @@ module.exports = function(group, element) {
     volumeTextField.html = getHTML('volume', 'Volume');
 
     group.entries.push(volumeTextField);
+
+    var keySelectBox = entryFactory.selectBox({
+      id : 'key',
+      description : 'Specify the main key',
+      label : 'Key',
+      modelProperty : 'key',
+      selectOptions: [
+        { name: 'C', value: 'c' },
+        { name: 'C#', value: 'csharp' },
+        { name: 'D', value: 'd' },
+        { name: 'D#', value: 'Dsharp' },
+        { name: 'E', value: 'E' },
+        { name: 'F', value: 'f' },
+        { name: 'F#', value: 'fsharp' },
+        { name: 'G', value: 'g' },
+        { name: 'G#', value: 'gsharp' },
+        { name: 'A', value: 'a' },
+        { name: 'A#', value: 'asharp' },
+        { name: 'B', value: 'b' }
+      ]
+    });
+
+    group.entries.push(keySelectBox);
+
+    var scaleSelectBox = entryFactory.selectBox({
+      id : 'scale',
+      description : 'Specify the main scale',
+      label : 'Scale',
+      modelProperty : 'scale',
+      selectOptions: [
+        { name: 'Major', value: 'major' },
+        { name: 'Minor', value: 'minor' },
+        { name: 'Melodic Minor', value: 'melodic minor' },
+        { name: 'Dorian', value: 'dorian' },
+        { name: 'Phrygian', value: 'phrygian' },
+        { name: 'Mixolydian', value: 'mixolydian' },
+        { name: 'Aeolian', value: 'aeolian' },
+        { name: 'Locrian', value: 'locrian' },
+      ]
+    });
+
+    group.entries.push(scaleSelectBox);
   }
 };

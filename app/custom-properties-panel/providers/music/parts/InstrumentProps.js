@@ -59,7 +59,7 @@ module.exports = function(group, element) {
       var note = entry.businessObject.get('note');
 
       if (note && node) {
-        var noteNode = domQuery('#'+note, node);
+        var noteNode = domQuery('#'+note.replace('#', 'sharp'), node);
 
         var activeNodes = domQuery('.active', node);
 

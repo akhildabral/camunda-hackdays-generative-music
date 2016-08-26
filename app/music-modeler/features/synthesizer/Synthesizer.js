@@ -43,7 +43,7 @@ Synthesizer.prototype.playFrequencyAt = function(frequency, time, tempo) {
 
 Synthesizer.prototype.playNoteAt = function(note, time, tempo) {
 
-  var note = note.replace('sharp', '#');
+  note = note.replace('sharp', '#');
 
   var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
 

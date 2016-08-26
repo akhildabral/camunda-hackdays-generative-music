@@ -29,7 +29,8 @@ var initialDiagram =
                     'xmlns:music="http://music" ' +
                     'targetNamespace="http://bpmn.io/schema/bpmn" ' +
                     'id="Definitions_1">' +
-    '<bpmn:process id="Process_1" isExecutable="false" music:tempo="120" music:volume="50">' +
+    '<bpmn:process id="Process_1" isExecutable="false"' +
+    ' music:tempo="120" music:volume="50" music:key="c" music:scale="major">' +
     '</bpmn:process>' +
     '<bpmndi:BPMNDiagram id="BPMNDiagram_1">' +
       '<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">' +

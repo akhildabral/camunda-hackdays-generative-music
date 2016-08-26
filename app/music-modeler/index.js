@@ -17,6 +17,7 @@ MusicModeler.prototype._modules = [].concat(
     { bendpoints: [ 'type', function() {} ]},
     require('./core'),
     require('./features/generator-manager'),
+    require('./features/harmony'),
     require('./features/context-pad'),
     require('./features/modeling'),
     require('./features/palette'),

@@ -83,7 +83,7 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
 
     sounds.push(pick(element.businessObject, [ 'preset', 'note' ]));
 
-    self._eventBus.fire('element.play', { element: element });
+    // self._eventBus.fire('element.play', { element: element });
   }
 
   if (!sounds.length) {
