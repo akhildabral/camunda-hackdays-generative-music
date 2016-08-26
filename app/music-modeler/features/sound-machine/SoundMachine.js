@@ -12,6 +12,12 @@ function SoundMachine(audioContext, masterClock) {
 
   this._compressor = audioContext.createDynamicsCompressor();
   this._compressor.connect(audioContext.destination);
+  this._compressor.threshold.value = -50;
+  this._compressor.knee.value = 40;
+  this._compressor.ratio.value = 12;
+  // this._compressor.reduction.value = -20;
+  this._compressor.attack.value = 0;
+  this._compressor.release.value = 0.25;
 
   this._presets = {};
 
@@ -67,16 +73,97 @@ SoundMachine.prototype.initDefaults = function() {
       filter: {
         type: 'lowpass',
         q: '6',
-        frequency: '10000'
+        frequency: '2000'
       },
       delay: {
-        delayTime: 4,
+        delayTime: 1,
         feedback: 0.5
       }
     })
   };
 
   this._presets.synthesizerSquarelead = synthesizerSquareLead;
+
+  // saw pad
+  var synthesizerSawPad = {
+    label: 'Saw Pad',
+    type: 'instrument',
+    preset: new Synthesizer(this._audioContext, this._compressor, {
+      oscillator: {
+        type: 'sawtooth'
+      },
+      envelope: {
+        attack: 0.1,
+        release: 0.9,
+        amplitude: 0.1
+      },
+      filter: {
+        type: 'lowpass',
+        q: '6',
+        frequency: '2000'
+      },
+      delay: {
+        delayTime: 5,
+        feedback: 0.5
+      }
+    })
+  };
+
+  this._presets.synthesizerSawPad = synthesizerSawPad;
+
+  // triangle synth
+  var synthesizerTriangle = {
+    label: 'Triangle',
+    type: 'instrument',
+    preset: new Synthesizer(this._audioContext, this._compressor, {
+      oscillator: {
+        type: 'triangle'
+      },
+      envelope: {
+        attack: 0.1,
+        release: 0.9,
+        amplitude: 0.1
+      },
+      filter: {
+        type: 'lowpass',
+        q: '6',
+        frequency: '2000'
+      },
+      delay: {
+        delayTime: 5,
+        feedback: 0.5
+      }
+    })
+  };
+
+  this._presets.synthesizerTriangle = synthesizerTriangle;
+
+  // glass synth
+  var synthesizerGlass = {
+    label: 'Glass',
+    type: 'instrument',
+    preset: new Synthesizer(this._audioContext, this._compressor, {
+      oscillator: {
+        type: 'triangle'
+      },
+      envelope: {
+        attack: 0.5,
+        release: 1.0,
+        amplitude: 0.1
+      },
+      filter: {
+        type: 'highpass',
+        q: '6',
+        frequency: '3000'
+      },
+      delay: {
+        delayTime: 5,
+        feedback: 0.5
+      }
+    })
+  };
+
+  this._presets.synthesizerGlass = synthesizerGlass;
 
   // 808 kick
   var samplerKick = {

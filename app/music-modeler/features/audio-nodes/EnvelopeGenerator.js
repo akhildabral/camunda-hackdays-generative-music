@@ -25,7 +25,7 @@ EnvelopeGenerator.prototype.trigger = function(delay) {
 EnvelopeGenerator.prototype.triggerAt = function(targetTime) {
   this.param.cancelScheduledValues(targetTime);
   this.param.setValueAtTime(0, targetTime);
-  this.param.linearRampToValueAtTime(1, targetTime + this.attack);
+  this.param.linearRampToValueAtTime(this.amplitude, targetTime + this.attack);
   this.param.linearRampToValueAtTime(0, targetTime + this.attack + this.release);
 }
 

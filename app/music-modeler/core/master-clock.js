@@ -96,4 +96,10 @@ MasterClock.prototype.nextNote = function() {
   if (this._currentNote === NUM_STEPS) {
     this._currentNote = 0;
   }
+
+  this._eventBus.fire('master-clock.next-note', {
+    nextNoteTime: this._nextNoteTime,
+    currentNote: this._currentNote
+  });
+
 };

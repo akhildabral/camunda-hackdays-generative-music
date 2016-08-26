@@ -15,7 +15,12 @@ function Synthesizer(audioContext, output, config) {
     reverse: false
   });
   this._output = output;
-  this._reverb.connect(this._output);
+
+  this._gain = this._audioContext.createGain();
+  this._gain.gain.value = 0.1;
+
+  // this._reverb.connect(this._gain);
+  this._gain.connect(this._output);
 
   if (!config) {
     throw new Error('no configuration found');
@@ -36,7 +41,7 @@ Synthesizer.prototype.playFrequencyAt = function(frequency, time, tempo) {
   var synthesizerVoice = new SynthesizerVoice(this._audioContext, this._config, frequency, tempo);
 
   // TODO connect to reverb!
-  synthesizerVoice.connect(this._output);
+  synthesizerVoice.connect(this._gain);
   synthesizerVoice.playAt(time);
 
 };
