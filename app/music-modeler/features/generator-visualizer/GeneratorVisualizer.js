@@ -6,7 +6,7 @@ var forEach = require('lodash/collection/forEach');
 
 var getDistance = require('diagram-js/lib/util/Geometry').pointDistance;
 
-var MAX_DIST = 600;
+var MAX_DIST = 800;
 
 function Token(eventBus, audioContext, canvas, executor, elementRegistry, masterClock) {
   this._audioContext = audioContext;

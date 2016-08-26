@@ -289,6 +289,22 @@ SoundMachine.prototype.initDefaults = function() {
 
   this._presets.huhSample = huhSample;
 
+  // test
+  var samplerKrush = {
+    label: 'Krush',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/krush.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.2
+      }
+    })
+  };
+
+  this._presets.samplerKrush = samplerKrush;
+
   // 808 snare
   var ohYeahSample = {
     label: 'Oh YEAH Vocal',
@@ -305,6 +321,21 @@ SoundMachine.prototype.initDefaults = function() {
 
   this._presets.ohYeahSample = ohYeahSample;
 
+  // test
+  var samplerAlien = {
+    label: 'Alien',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/alien.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.2
+      }
+    })
+  };
+
+  this._presets.samplerAlien = samplerAlien;
 };
 
 SoundMachine.prototype.playSoundAt = function(sound, time) {
