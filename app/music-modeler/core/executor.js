@@ -14,7 +14,7 @@ function Executor(eventBus, audioContext, soundMachine) {
 
   eventBus.on('master-clock.start', function(context) {
     var numSteps = context.numSteps,
-        idx;
+        idx = 0;
 
     this._steps.length = numSteps;
 
@@ -25,7 +25,16 @@ function Executor(eventBus, audioContext, soundMachine) {
 
   eventBus.on('master-clock.tick', function(context) {
     // trigger sounds
-    this.trigger(context.tick, context.nextNoteTime);
+    var elements = this.trigger(context.tick, context.nextNoteTime),
+        idx = 0;
+
+    if (!elements) {
+      return;
+    }
+
+    for (idx; idx < elements.length; idx++) {
+      eventBus.fire('element.play', { element: elements[idx] });
+    }
   }, this);
 }
 
@@ -79,8 +88,6 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
     var element = elements[idx];
 
     sounds.push(pick(element.businessObject, [ 'preset', 'note' ]));
-
-    self._eventBus.fire('element.play', { element: element });
   }
 
   if (!sounds.length) {
@@ -88,4 +95,6 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
   }
   console.log(JSON.stringify(sounds));
   soundMachine.playPatches(sounds, nextNoteTime);
+
+  return elements;
 };

@@ -39,8 +39,7 @@ function MasterClock(eventBus, audioContext) {
         if (self._tempo !== tempo) {
           self._tempo = tempo;
         }
-      };
-
+      }
     });
   }, this);
 }
@@ -54,7 +53,7 @@ MasterClock.prototype.init = function() {
   var self = this,
       eventBus = this._eventBus;
 
-  var worker = this.worker = new Worker('./worker.js');
+  var worker = this.worker = new Worker('./lib/worker.js');
 
   worker.onmessage = function(e) {
 
