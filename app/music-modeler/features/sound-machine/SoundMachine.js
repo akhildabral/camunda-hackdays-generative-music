@@ -273,6 +273,38 @@ SoundMachine.prototype.initDefaults = function() {
 
   this._presets.samplerSnare = samplerSnare;
 
+  // huh sample
+  var huhSample = {
+    label: 'Huh Vocal',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/huh-01.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.05
+      }
+    })
+  };
+
+  this._presets.huhSample = huhSample;
+
+  // 808 snare
+  var ohYeahSample = {
+    label: 'Oh YEAH Vocal',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/oh-yeah.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.05
+      }
+    })
+  };
+
+  this._presets.ohYeahSample = ohYeahSample;
+
 };
 
 SoundMachine.prototype.playSoundAt = function(sound, time) {
