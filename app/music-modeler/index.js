@@ -15,6 +15,7 @@ MusicModeler.prototype._modules = [].concat(
   [
     { audioContext: [ 'value', new window.AudioContext() ] },
     { bendpoints: [ 'type', function() {} ]},
+    { labelEditingProvider: [ 'type', function() {} ]},
     require('./core'),
     require('./features/generator-manager'),
     require('./features/harmony'),
