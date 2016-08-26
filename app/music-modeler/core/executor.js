@@ -3,7 +3,6 @@
 var forEach = require('lodash/collection/forEach'),
     pick = require('lodash/object/pick');
 
-
 function Executor(eventBus, audioContext, soundMachine) {
   this._eventBus = eventBus;
   this._audioContext = audioContext;
@@ -83,7 +82,7 @@ Executor.prototype.trigger = function(tick, nextNoteTime) {
 
     sounds.push(pick(element.businessObject, [ 'preset', 'note' ]));
 
-    // self._eventBus.fire('element.play', { element: element });
+    self._eventBus.fire('element.play', { element: element });
   }
 
   if (!sounds.length) {

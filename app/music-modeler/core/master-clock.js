@@ -54,7 +54,7 @@ MasterClock.prototype.init = function() {
   var self = this,
       eventBus = this._eventBus;
 
-  var worker = this.worker = new Worker("lib/worker.js");
+  var worker = this.worker = new Worker('./worker.js');
 
   worker.onmessage = function(e) {
 

@@ -8,10 +8,9 @@ function Token(eventBus, audioContext, canvas, executor, elementRegistry, master
   this._audioContext = audioContext;
   this._executor = executor;
   this._elementRegistry = elementRegistry;
+  this._masterClock = masterClock;
 
   this._layer = canvas.getDefaultLayer().group();
-
-  this._tokens = [];
 
   var self = this;
 
@@ -21,43 +20,30 @@ function Token(eventBus, audioContext, canvas, executor, elementRegistry, master
 
       // reset
       self._layer.clear();
-      self._tokens = [];
 
       setTimeout(function() {
 
         forEach(self._executor.getAllGenerators(), function(generator) {
           var generatorShape = self._elementRegistry.get(generator.id);
 
-          forEach(generatorShape.outgoing, function(connection) {
-
-            var targetShape = connection.target;
-
-            var circle = self._layer.circle(
-              generatorShape.x + generatorShape.width / 2,
-              generatorShape.y + generatorShape.height / 2,
-              10).attr({
-                fill: "#f00",
-                strokeWidth: 0,
-                fillOpacity: 0.5
-            });
-
-            this._tokens.push({
-                gfx: circle,
-                targetShape: { x: targetShape.x, y: targetShape.y }
-            });
-
+          var circle = self._layer.circle(
+            generatorShape.x + generatorShape.width / 2,
+            generatorShape.y + generatorShape.height / 2,
+            1).attr({
+              fill: "#00f",
+              strokeWidth: 0,
+              fillOpacity: 0.5,
+              pointerEvents: 'none'
           });
+
+          var loopLengthInSeconds = 60 / self._masterClock._tempo * 4;
+
+          circle.animate({ r: 600, opacity: 0 }, loopLengthInSeconds * 1000);
 
         });
 
       }, context.nextNoteTime - self._audioContext.currentTime);
     }
-
-  });
-
-  eventBus.on('master-clock.tick', function(context) {
-    var tempo = masterClock._tempo;
-    
 
   });
 

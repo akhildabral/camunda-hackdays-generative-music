@@ -24,7 +24,7 @@ MusicModeler.prototype._modules = [].concat(
     require('./features/palette'),
     require('./features/sound-machine'),
     require('./features/visualizer'),
-    require('./features/token')
+    require('./features/generator-visualizer')
   ]
 );
 
