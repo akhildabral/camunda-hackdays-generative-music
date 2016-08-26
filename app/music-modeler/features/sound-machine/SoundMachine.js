@@ -273,6 +273,38 @@ SoundMachine.prototype.initDefaults = function() {
 
   this._presets.samplerSnare = samplerSnare;
 
+  // test
+  var samplerKrush = {
+    label: 'Krush',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/krush.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.2
+      }
+    })
+  };
+
+  this._presets.samplerKrush = samplerKrush;
+
+  // test
+  var samplerAlien = {
+    label: 'Alien',
+    type: 'drums',
+    preset: new Sampler(this._audioContext, this._compressor, {
+      url: 'samples/alien.wav',
+      rootKey: 'c3',
+      delay: {
+        delayTime: 2,
+        feedback: 0.2
+      }
+    })
+  };
+
+  this._presets.samplerAlien = samplerAlien;
+
 };
 
 SoundMachine.prototype.playSoundAt = function(sound, time) {
