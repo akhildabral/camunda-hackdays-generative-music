@@ -60,7 +60,9 @@
   },
   "dependencies": {
     "bpmn-js": "^0.16.0",
+    "bpmn-js-properties-panel": "^0.8.2",
     "diagram-js": "^0.16.0",
+    "ids": "^0.2.0",
     "inherits": "^2.0.1",
     "lodash": "^3.10.1",
     "min-dom": "^0.2.0",
