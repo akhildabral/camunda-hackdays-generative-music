@@ -1,7 +1,5 @@
 'use strict';
 
-var Snap = require('diagram-js/vendor/snapsvg');
-
 var forEach = require('lodash/collection/forEach');
 
 var getDistance = require('diagram-js/lib/util/Geometry').pointDistance;

@@ -2,8 +2,7 @@
 
 var entryFactory = require('bpmn-js-properties-panel/lib/factory/EntryFactory');
 
-var domAttr = require('min-dom/lib/attr'),
-    domQuery = require('min-dom/lib/query');
+var domQuery = require('min-dom/lib/query');
 
 var is = require('bpmn-js/lib/util/ModelUtil').is;
 

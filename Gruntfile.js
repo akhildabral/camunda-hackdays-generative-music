@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
     jshint: {
       src: [
-        ['<%=config.sources %>']
+        ['<%=config.sources %>', '!app/music-modeler/lib/worker.js']
       ],
       options: {
         jshintrc: true
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%=config.sources %>/lib/',
+            cwd: '<%=config.sources %>/music-modeler/lib',
             src:[ '*.js' ],
             dest: '<%= config.dist %>/lib'
           }

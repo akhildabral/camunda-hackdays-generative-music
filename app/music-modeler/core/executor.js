@@ -1,7 +1,6 @@
 'use strict';
 
-var forEach = require('lodash/collection/forEach'),
-    pick = require('lodash/object/pick');
+var pick = require('lodash/object/pick');
 
 function Executor(eventBus, audioContext, soundMachine) {
   this._eventBus = eventBus;

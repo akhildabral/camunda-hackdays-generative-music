@@ -17,8 +17,6 @@ function Sampler(audioContext, output, config) {
     throw new Error('no url found');
   }
 
-  this._sampleBuffer;
-
   var that = this;
 
   loadSample(this._audioContext, config.url, function(buffer) {
@@ -55,7 +53,7 @@ Sampler.prototype.playNoteAt = function(note, time, tempo) {
     return;
   }
 
-  var note = note.replace('sharp', '#');
+  note = note.replace('sharp', '#');
 
   var frequency = parser.parse(note).freq; // => { letter: 'C', acc: '#', ... midi: 61, freq: 277.1826309768721 }
 

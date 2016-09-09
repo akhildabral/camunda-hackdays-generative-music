@@ -12,10 +12,10 @@ module.exports.loadSample = function(audioContext, url, callback) {
     audioContext.decodeAudioData(request.response, function(buffer) {
       callback(buffer);
     }, onError);
-  }
+  };
 
   request.send();
-}
+};
 
 function onError() {
   throw new Error('error loading sample');

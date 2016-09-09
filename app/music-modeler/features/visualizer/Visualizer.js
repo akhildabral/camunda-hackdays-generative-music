@@ -10,11 +10,13 @@ function Visualizer(eventBus, overlays) {
     var html;
 
     if (is(element, 'bpmn:Task')) {
-      html = '<div style="width: 110px; height: 90px; background-color: rgba(82, 180, 21, 0.5); border-radius: 10px"></div>';
+      html = '<div style="width: 110px; height: 90px; background-color: rgba(82, 180, 21, 0.5); ' +
+             'border-radius: 10px"></div>';
     }
 
     if (is(element, 'bpmn:EndEvent')) {
-     html = '<div style="width: 46px; height: 46px; background-color: rgba(255, 0, 0, 0.5); border-radius: 23px"></div>';
+     html = '<div style="width: 46px; height: 46px; background-color: rgba(255, 0, 0, 0.5); ' +
+            'border-radius: 23px"></div>';
     }
 
     var overlayId = overlays.add(element, {
@@ -25,7 +27,9 @@ function Visualizer(eventBus, overlays) {
       html: html
     });
 
-    setTimeout(function() { overlays.remove(overlayId)}, 200);
+    setTimeout(function() { 
+      overlays.remove(overlayId);
+    }, 200);
 
   });
 }

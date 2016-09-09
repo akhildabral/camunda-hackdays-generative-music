@@ -1,9 +1,8 @@
-'use strict';
-
 var timer,
     interval = 100;
 
 onmessage = function(e) {
+  'use strict';
 
   // start timer
   if (e.data === 'start') {
@@ -21,5 +20,4 @@ onmessage = function(e) {
 		clearInterval(timer);
 		timer = undefined;
 	}
-
-}
+};

@@ -56,7 +56,7 @@ SamplerVoice.prototype.connect = function(node) {
     this.output.connect(node.input);
   } else {
     this.output.connect(node);
-  };
+  }
 
 };
 

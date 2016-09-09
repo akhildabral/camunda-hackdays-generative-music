@@ -65,10 +65,6 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
     };
   }
 
-  function createParticipant(event, collapsed) {
-    create.start(event, elementFactory.createParticipantShape(collapsed));
-  }
-
   assign(actions, {
     'create.start-event': createAction(
       'bpmn:StartEvent',
@@ -91,28 +87,28 @@ PaletteProvider.prototype.getPaletteEntries = function(element) {
       'bpmn:EndEvent', 'instrument',
       'bpmn-icon-end-event-escalation',
       'Create Square Lead',
-      { eventDefinitionType: 'bpmn:EscalationEventDefinition', preset: 'synthesizerSquarelead', note: 'e3' }
+      { eventDefinitionType: 'bpmn:EscalationEventDefinition', preset: 'synthesizerSquarelead', note: 'd3' }
     ),
     'create.signal-end-event': createAction(
       'bpmn:EndEvent',
       'instrument',
       'bpmn-icon-end-event-signal',
       'Create Instrument C',
-      { eventDefinitionType: 'bpmn:SignalEventDefinition' }
+      { eventDefinitionType: 'bpmn:SignalEventDefinition', preset: 'synthesizerSawPad', note: 'e3'  }
     ),
     'create.cancel-end-event': createAction(
       'bpmn:EndEvent',
       'instrument',
       'bpmn-icon-end-event-cancel',
       'Create Instrument D',
-      { eventDefinitionType: 'bpmn:CancelEventDefinition' }
+      { eventDefinitionType: 'bpmn:CancelEventDefinition', preset: 'synthesizerTriangle', note: 'f3'  }
     ),
     'create.compensation-end-event': createAction(
       'bpmn:EndEvent',
       'instrument',
       'bpmn-icon-end-event-compensation',
       'Create Instrument E',
-      { eventDefinitionType: 'bpmn:CompensateEventDefinition' }
+      { eventDefinitionType: 'bpmn:CompensateEventDefinition', preset: 'synthesizerGlass', note: 'g3'  }
     ),
     'instrument-separator': {
       group: 'instrument',
