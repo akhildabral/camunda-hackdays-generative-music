@@ -1,1 +1,3 @@
-# Generative Music, yo
+# Generative Music with bpmn-js
+
+
