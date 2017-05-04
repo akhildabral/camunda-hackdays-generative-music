@@ -72,7 +72,7 @@ function Token(eventBus, audioContext, canvas, executor, elementRegistry, master
               generatorShape.x + generatorShape.width / 2,
               generatorShape.y + generatorShape.height / 2,
               i * ringRadiusStepSize).attr({
-                fill: 'rgba(0, 0, 255, ' + (1 / subDivision * ( subDivision - i) * 0.05) + ')',
+                fill: 'rgba(255, 116, 0, ' + (1 / subDivision * (subDivision - i) * 0.05) + ')',
                 strokeWidth: 0,
                 pointerEvents: 'none'
             });
