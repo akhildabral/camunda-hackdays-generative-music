@@ -713,7 +713,7 @@ ul.bpp-properties-tabs-links > li.bpp-active a {
 }
 
 .bpp-properties-entry #keyboard .active {
-  background-color: #52b415;
+  background-color: rgba(255, 116, 0, 0.5);
 }
 
 .djs-overlays div {
