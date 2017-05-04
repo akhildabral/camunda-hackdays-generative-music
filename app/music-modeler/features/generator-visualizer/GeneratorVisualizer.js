@@ -34,7 +34,7 @@ function Token(eventBus, audioContext, canvas, executor, elementRegistry, master
             generatorShape.x + generatorShape.width / 2,
             generatorShape.y + generatorShape.height / 2,
             1).attr({
-              fill: '#00f',
+              fill: 'rgb(255, 116, 0)',
               strokeWidth: 0,
               fillOpacity: 0.5,
               pointerEvents: 'none'

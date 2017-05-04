@@ -2,7 +2,8 @@
   "scripts": {
     "test": "grunt test",
     "dev": "grunt auto-build",
-    "all": "grunt"
+    "all": "grunt",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "browserify": "^13.0.0",

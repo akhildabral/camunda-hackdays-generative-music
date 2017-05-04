@@ -15,7 +15,7 @@ function Visualizer(eventBus, overlays) {
     }
 
     if (is(element, 'bpmn:EndEvent')) {
-     html = '<div style="width: 46px; height: 46px; background-color: rgba(255, 0, 0, 0.5); ' +
+     html = '<div style="width: 46px; height: 46px; background-color: rgba(255, 116, 0, 0.5); ' +
             'border-radius: 23px"></div>';
     }
 
@@ -27,7 +27,7 @@ function Visualizer(eventBus, overlays) {
       html: html
     });
 
-    setTimeout(function() { 
+    setTimeout(function() {
       overlays.remove(overlayId);
     }, 200);
 
