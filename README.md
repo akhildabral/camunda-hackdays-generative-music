@@ -9,7 +9,7 @@
 - Tasks are sampler nodes
 - Use properties panel to change properties
 
-## Contributers
+## Contributors
 
 - [pedesen](https://github.com/pedesen)
 - [philippfromme](https://github.com/philippfromme)
